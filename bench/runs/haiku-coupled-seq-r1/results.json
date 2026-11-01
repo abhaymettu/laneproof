@@ -1,0 +1,171 @@
+{
+ "condition": "seq",
+ "suite": "coupled",
+ "rep": 1,
+ "model": "haiku",
+ "parallel": 4,
+ "wall_seconds": 353.8,
+ "final_commit": "a53ad9822f9d61b8cad1e767ab40c1f857de104d",
+ "lanes": [
+  {
+   "seconds": 22.2,
+   "claim": "done",
+   "usage": {
+    "turns": 7,
+    "input_tokens": 12,
+    "output_tokens": 2970,
+    "cache_read_tokens": 49540,
+    "cache_write_tokens": 6576,
+    "runs": 1,
+    "session_id": "2d658bee-5698-4b05-b822-019f148ec7a0",
+    "final": "The README table and the registry already agreed, so no rows or help strings needed fixing. I added the test that will catch future drift.\n\n**Changes**\n- **`tests/test_docsync.py`** (new): for every entry in `COMMANDS`, it finds the README row for that command and asserts the \"what it does\" cell equals the `help` string exactly. A command with no row fails too.\n- **`CHANGELOG.md`**: added a bullet under `## Unreleased` that names `test_docsync` in backticks.\n\n**Checks**\n- All three commands (`commands`, `count`, `shout`) have README cells that match their help strings exactly. I compared them programmatically, and the files contain no non-ASCII characters.\n- `python3 -m unittest` runs 6 tests and passes, including the new one.\n- To confirm the new test catches drift, I changed the `count` README cell to `count words`. The test failed with 1 failure. I then restored the README with `git checkout`, and the suite passed again. `git status` shows only the two intended changes.\n\nI did not commit, as requested.\n\nSTATUS: done"
+   },
+   "task": "docsync",
+   "claim_commit": "4f55d88afaeb27333d613599f4cd0d03c544a1b8"
+  },
+  {
+   "seconds": 27.3,
+   "claim": "done",
+   "usage": {
+    "turns": 11,
+    "input_tokens": 12,
+    "output_tokens": 5873,
+    "cache_read_tokens": 57770,
+    "cache_write_tokens": 10873,
+    "runs": 1,
+    "session_id": "eb1fb1aa-baa0-4c14-94cb-ecd7858c8f0e",
+    "final": "The `dur` command, `parse_duration`/`format_duration`, docs, changelog, and tests are in place. `python3 -m unittest` runs 14 tests, all passing, up from 6.\n\nEvery acceptance check passes when run directly:\n- **c1/c2:** all examples give the specified results, and every listed invalid input raises `ValueError`, as does `format_duration(-1)`.\n- **c3:** `dur 1h30m` prints `5400`, `dur 5400` prints `1h30m`, and `dur 30m1h` prints `error: invalid duration: '30m1h'` to stderr and exits 2.\n- **c4:** the README has a `dur` row, and `commands` lists `dur`. The existing docsync test checks that the row text matches the help string exactly.\n- **c5:** CHANGELOG.md has a new bullet under `## Unreleased` that names `` `dur` ``.\n- **c6:** `tests/test_duration.py` covers the parser, the formatter, a round trip, and the CLI.\n\nChoices I made:\n- **Parsing:** one anchored regex with optional `h`, `m`, `s` groups. Only ASCII digits are accepted, and an empty string is rejected explicitly.\n- **CLI digit check:** `dur` uses `isascii() and isdigit()`, so Unicode digits like `\u00b2` go to the parser rather than crashing `int()`.\n- **Help text:** \"convert a duration like 1h30m to seconds, or seconds to a duration\". It has no `|` characters, which would break the table regex.\n\nNothing is committed. The changes are in `textkit/duration.py` (new), `textkit/cli.py`, `README.md`, `CHANGELOG.md`, and `tests/test_duration.py` (new).\n\nSTATUS: done"
+   },
+   "task": "duration",
+   "claim_commit": "4ceed8443bc23fd110c8ee81f4e986964b07c7ff"
+  },
+  {
+   "seconds": 33.3,
+   "claim": "done",
+   "usage": {
+    "turns": 10,
+    "input_tokens": 14,
+    "output_tokens": 6104,
+    "cache_read_tokens": 72592,
+    "cache_write_tokens": 11341,
+    "runs": 1,
+    "session_id": "ec7fb4a7-5e65-4d00-9b2e-3bf6527234cd",
+    "final": "`--json` now works as a global option before any command, and the unit suite passes (19 tests, the 14 existing plus 5 new).\n\n- **How it works:** `main()` parses `--json` on the top-level parser, runs the command with stdout captured, and prints `{\"command\", \"exit\", \"output\"}`. The command modules are untouched, so commands added later get the behavior automatically.\n- **Errors:** a ValueError still prints `error: <message>` to stderr, exits 2, and puts `\"exit\": 2` in the JSON on stdout. Any lines the command printed before the error appear in `output`.\n- **Without the flag:** the code path is the same as before, and a test checks plain output.\n- **Docs:** I added a bullet to the Conventions section of README.md and a bullet under `## Unreleased` in CHANGELOG.md that names `` `--json` ``.\n- **Tests:** `tests/test_json.py` covers `shout`, the `commands` list, the ValueError case, and plain output. A loop over the registry runs every command with `--json` and compares its output to the plain run, so new commands are covered without editing the test.\n\nI checked the CLI by hand: `shout hi`, `dur xyz`, and `commands` all produce the expected JSON and exit codes.\n\nOne choice to review: argparse's own usage errors (for example, an unknown command) still exit with argparse's normal message and do not produce the JSON object. The spec only covered ValueErrors, so I left those alone.\n\nI did not commit.\n\nSTATUS: done"
+   },
+   "task": "jsonout",
+   "claim_commit": "13fc65d5be7d1cfd8ed24654c7e6dd18794ee02d"
+  },
+  {
+   "seconds": 41.3,
+   "claim": "done",
+   "usage": {
+    "turns": 13,
+    "input_tokens": 12,
+    "output_tokens": 8480,
+    "cache_read_tokens": 67604,
+    "cache_write_tokens": 16210,
+    "runs": 1,
+    "session_id": "e4d8d7cc-7985-4e70-9eb7-d018ea2964a9",
+    "final": "`mdtable` is in place and `python3 -m unittest` passes (30 tests, including the new `tests/test_mdtable.py`).\n\n- **Function:** `textkit/mdtable.py` has `to_markdown(rows)`. It strips each cell, escapes `|` as `\\|`, and raises `ValueError` for no rows, an empty header, or ragged rows.\n- **Command:** `textkit/cli.py` registers `mdtable` with `csv.reader(sys.stdin)`. Errors go through the existing `_run` path, so a ragged CSV exits 2 with `error:` on stderr.\n- **Docs:** `README.md` has the `mdtable` row, and `CHANGELOG.md` has a bullet under `## Unreleased` that names `` `mdtable` ``.\n\nI checked the CLI by hand:\n- `printf \"a,b\\n1,2\\n\" | python3 -m textkit mdtable` prints the three-line table and exits 0.\n- `printf \"a,b\\n1\\n\" | python3 -m textkit mdtable` prints `error: row 2 has 1 cells, header has 2` and exits 2.\n- `python3 -m textkit commands` lists `mdtable`.\n- `--json mdtable` also works.\n\nOne change you didn't ask for: `tests/test_json.py` runs every registered command with no stdin, so the new stdin-reading `mdtable` broke `test_every_command_matches_plain_output`. I made its `run` helper feed a small CSV on stdin via `mock.patch(\"sys.stdin\", ...)`. The other commands ignore stdin, so their assertions are unchanged.\n\nChoices I made:\n- The README cell and help string are both \"convert CSV on standard input to a markdown table\". The docsync test needs them to match word for word.\n- Blank lines in the CSV parse as empty rows, so they raise the ragged-row error. I didn't add special handling for them.\n\nI did not commit.\n\nSTATUS: done"
+   },
+   "task": "mdtable",
+   "claim_commit": "e19ba616f1a6f7269ac47467088f0bf208add866"
+  },
+  {
+   "seconds": 29.2,
+   "claim": "done",
+   "usage": {
+    "turns": 10,
+    "input_tokens": 12,
+    "output_tokens": 5587,
+    "cache_read_tokens": 64245,
+    "cache_write_tokens": 12159,
+    "runs": 1,
+    "session_id": "e7ff58b4-ec5a-4674-9e8a-c0b196a56f40",
+    "final": "The `near` command is in place and all acceptance checks pass. The full suite runs 46 tests, all passing, and the README docsync and docs tests pass too.\n\n**Changes**\n- `textkit/near.py`: `levenshtein(a, b)` uses the standard row-by-row edit distance. `closest(word, candidates, max_distance=2)` raises `ValueError` if `max_distance < 0`, keeps the first candidate on ties, and returns `None` for an empty list or when the best distance exceeds `max_distance`.\n- `textkit/cli.py`: registers `near WORD CANDIDATE... [--max N]`, with `--max` as an int defaulting to 2. It prints the match, or prints `no match` to stderr and returns 1.\n- `README.md`: added a `near` row whose text matches the help string exactly, which the docsync test requires.\n- `CHANGELOG.md`: added a bullet under `## Unreleased` that names `near` in backticks.\n- `tests/test_near.py`: covers the distance function, `closest` (ties, the inclusive limit, the default, and the negative-limit error), and the CLI (match, no match, `--max`, the exit-2 error path, and `--json`).\n\n**Checks run**\n- `python3 -m textkit near helo hello help` prints `hello` and exits 0.\n- `python3 -m textkit near zzzz hello` prints `no match` to stderr and exits 1.\n- `python3 -m textkit near helo hello --max -1` prints `error: max_distance must be >= 0` to stderr and exits 2.\n- `python3 -m textkit commands` lists `near`.\n- `levenshtein(\"kitten\", \"sitting\")` returns 3.\n\n**Choices I made**\n- `--max` is typed as an int, so a non-numeric value is rejected by argparse, not by the command.\n- With `--json`, a no-match run prints the JSON object with `\"output\": []` and exit 1, and `no match` still goes to stderr. This follows the existing convention that errors go to stderr.\n\nI did not commit, as requested.\n\nSTATUS: done"
+   },
+   "task": "near",
+   "claim_commit": "712ebe69ec8c09b6fea2afbafc8c5ec6dda510b8"
+  },
+  {
+   "seconds": 48.8,
+   "claim": "done",
+   "usage": {
+    "turns": 15,
+    "input_tokens": 24,
+    "output_tokens": 8970,
+    "cache_read_tokens": 177314,
+    "cache_write_tokens": 17865,
+    "runs": 1,
+    "session_id": "9d41960c-3d17-4977-adc7-d35a1da83d5b",
+    "final": "`roman` is implemented, and `python3 -m unittest` passes (55 tests, including the 9 new ones in `tests/test_roman.py`).\n\n**What changed**\n- `textkit/roman.py`: `to_roman` and `from_roman`. `from_roman` checks the string against a canonical-form regex, so non-canonical input like `IIII`, `IC`, `VX`, `mcm` and `\"\"` raises `ValueError`.\n- `textkit/cli.py`: a `roman VALUE` command that follows the `dur` pattern: all-digit input is converted to a numeral, anything else to an integer.\n- `README.md`: a `roman` row in the Commands table, with text identical to the help string, so `test_docsync` passes.\n- `CHANGELOG.md`: a bullet under `## Unreleased` that names `roman`.\n- `tests/test_roman.py`: the functions, round-trip for 1..3999, error cases, and the CLI.\n- `tests/test_json.py`: one change outside the request, explained below.\n\n**Decision for you:** `test_json.py` passes the sample argument `\"1h\"` to every registered command. That value is not a valid Roman numeral, so the new command failed that test. I changed the shared sample to `\"1\"`, which is valid for `shout`, `count`, `dur` (as `1s`), `roman` (as `I`) and `near`. The test's purpose is unchanged. If you'd rather keep `\"1h\"`, the alternative is a per-command sample argument in that test.\n\n**Checks against the acceptance criteria**\n- c1: round-trip passes for every n in 1..3999. I also brute-forced all strings up to length 5 over `IVXLCDM`: none outside `to_roman`'s output set is accepted.\n- c2: `to_roman(0)`, `to_roman(4000)`, `from_roman(\"IIII\")`, `from_roman(\"IC\")` and `from_roman(\"\")` all raise `ValueError`.\n- c3: `roman 1994` prints `MCMXCIV`; `roman MCMXCIV` prints `1994`; `roman IIII` prints `error: not a canonical roman numeral: 'IIII'` to stderr and exits 2.\n- c4: the README row is present, and `python3 -m textkit commands` lists `roman`.\n- c5: the CHANGELOG bullet is under `## Unreleased` and names `` `roman` ``.\n- c6: `tests/test_roman.py` covers the function and the CLI, and the full suite passes.\n\nI did not commit.\n\nSTATUS: done"
+   },
+   "task": "roman",
+   "claim_commit": "3efb6d59c8bfe42076fa8cc463259e49230fb86c"
+  },
+  {
+   "seconds": 51.4,
+   "claim": "done",
+   "usage": {
+    "turns": 15,
+    "input_tokens": 22,
+    "output_tokens": 8083,
+    "cache_read_tokens": 160385,
+    "cache_write_tokens": 17738,
+    "runs": 1,
+    "session_id": "c5d8c1a1-f145-4fe1-971a-b5535fc8eb71",
+    "final": "Everything is in place and the full suite passes: 68 tests, up from 55.\n\n**What changed**\n- `textkit/rot.py`: `rot(text, n)` builds a letter translation table with `n % 26`, so negative and large `n` wrap correctly. It raises `ValueError` for non-ints, including `bool`.\n- `textkit/cli.py`: registers `rot TEXT [--n N]`, default 13. `--n` is read as a string and converted with `int()` inside the command, so a bad value goes through the normal `error:` path and exits 2. I chose this over argparse's `type=int`, whose error text doesn't match the README's convention.\n- `README.md`: added a `rot` row. Its text matches the help string exactly, which `test_docsync.py` checks.\n- `CHANGELOG.md`: added a bullet under `## Unreleased` that names `rot` in backticks.\n- `tests/test_rot.py`: 13 tests covering the function (examples, case, wrap, negative/large `n`, non-int rejection, round trip) and the CLI (default, `--n`, error exit, `commands` listing).\n- `tests/test_json.py`: one change outside the request. The generic \"every command\" test appended one `\"1\"` per registered arg, including options, so `rot` got a stray positional. The test now counts only positional args, which is what its comment describes. `near` still passes.\n\n**Checked against the acceptance criteria**\n- c1, c2, c6: `python3 -m unittest` runs 68 tests and they all pass.\n- c3: `rot \"Hello, World!\"` prints `Uryyb, Jbeyq!`. `rot abc --n -1` prints `zab`. `rot abc --n 1.5` prints `error: n must be an integer: '1.5'` to stderr and exits 2.\n- c4: `python3 -m textkit commands` lists `rot`, and the README row is covered by the docs tests.\n- c5: the changelog bullet is in place.\n\nI did not commit, per the instructions.\n\nSTATUS: done"
+   },
+   "task": "rot",
+   "claim_commit": "2569fb6a20cd2622f5a93023d78a8bf5a8e4879b"
+  },
+  {
+   "seconds": 38.4,
+   "claim": "done",
+   "usage": {
+    "turns": 11,
+    "input_tokens": 16,
+    "output_tokens": 6908,
+    "cache_read_tokens": 105543,
+    "cache_write_tokens": 15861,
+    "runs": 1,
+    "session_id": "ef55f700-7e0b-4b93-8df8-d81910058efc",
+    "final": "`slug` is in place: `textkit/slug.py` with `slugify(text, sep=\"-\")`, a `slug TEXT [--sep SEP]` command, a README row, a CHANGELOG bullet under Unreleased, and `tests/test_slug.py`. `python3 -m unittest` passes all 81 tests, including the existing README/registry sync checks.\n\nI checked the CLI by hand:\n- `slug \"H\u00e9llo, W\u00f6rld!\"` prints `hello-world`.\n- `slug \"a b\" --sep _` prints `a_b`.\n- `slug \"!!!\"` prints `error: nothing left to make a slug from: '!!!'` to stderr and exits 2.\n- `commands` lists `slug`.\n\nChoices I made:\n- **Tokenizing, not replace-and-strip.** The slug is built by collecting runs of `a-z0-9`, then joining them with `sep`. Stripping `sep` from the ends would eat real letters when `sep` is a letter (`slugify(\"hello\", sep=\"x\")` would become `ello`), so I avoided it.\n- **Dropping vs. splitting.** Non-ASCII characters that have no ASCII decomposition are dropped, not treated as separators, so `\"a\u20acb\"` becomes `ab`. This follows the spec's \"drop\" wording.\n- **`sep` is not validated.** `sep=\"\"` is allowed and joins the words directly.\n- **Error message.** The `ValueError` includes the repr of the input text.\n\nI did not commit.\n\nSTATUS: done"
+   },
+   "task": "slug",
+   "claim_commit": "6fbc2d618d75400e6ff5c70daca3799b4876622a"
+  },
+  {
+   "seconds": 30.2,
+   "claim": "done",
+   "usage": {
+    "turns": 10,
+    "input_tokens": 10,
+    "output_tokens": 5612,
+    "cache_read_tokens": 52407,
+    "cache_write_tokens": 13418,
+    "runs": 1,
+    "session_id": "35be45b7-d23e-40e2-9d0a-38c1e11aebbe",
+    "final": "`top` is in place: `textkit/topwords.py` with `top_words(text, k)`, a `top` CLI command with `--k` defaulting to 3, a README row, a CHANGELOG bullet, and `tests/test_topwords.py`. The full suite passes (94 tests, `python3 -m unittest`).\n\nI checked each criterion directly:\n- **c1:** Counting is case-insensitive, non-letters split words (`don't` \u2192 `don`, `t`), and ties sort alphabetically.\n- **c2:** `k < 1` raises `ValueError`.\n- **c3:** `top \"b a b c a b\" --k 2` prints `b 3` then `a 2`. `top x --k 0` exits 2 with `error: k must be at least 1: 0` on stderr.\n- **c4:** The README has a `top` row, and `commands` lists it. The existing docsync test confirms the README cell matches the help string.\n- **c5:** The CHANGELOG bullet under `## Unreleased` names `` `top` ``.\n- **c6:** The new tests cover the function, the CLI, the `--json` path, and the `commands` listing.\n\nChoices I made:\n- The lowercasing happens before the `[a-z]` match, as the spec's order reads. A few non-ASCII characters lowercase to ASCII letters, so `\"K\"` (Kelvin sign) would count as `k`. If you want only literal ASCII letters, switch to matching `[A-Za-z]` before lowercasing. I left it as written.\n- `--k` uses `type=int`, so a non-numeric value gets argparse's own usage error (exit 2), not the `error:` format. Only `--k 0` was in the spec.\n\nI did not commit.\n\nSTATUS: done"
+   },
+   "task": "topwords",
+   "claim_commit": "43dc1d26b9e60f1fccee9d12c1f46354b5c04040"
+  },
+  {
+   "seconds": 30.5,
+   "claim": "done",
+   "usage": {
+    "turns": 7,
+    "input_tokens": 10,
+    "output_tokens": 6073,
+    "cache_read_tokens": 52338,
+    "cache_write_tokens": 14224,
+    "runs": 1,
+    "session_id": "d590815d-36a4-459b-b0b0-0639629b7532",
+    "final": "`wrap` is in place: `textkit/wrap.py`, a `wrap` CLI command, a README row, a CHANGELOG bullet, and `tests/test_wrap.py`. `python3 -m unittest` runs 107 tests and all pass.\n\nChecks:\n- `python3 -m textkit wrap \"aaa bbb ccc\" --width 7` prints `aaa bbb` and `ccc` on two lines and exits 0.\n- `python3 -m textkit wrap x --width 0` prints `error: width must be at least 1: 0` to stderr and exits 2.\n- `wrap` appears in `python3 -m textkit commands`, and the README-table and help-string sync tests pass with the new row.\n\nChoices I made:\n- The README row and the `--width` help text use the same wording as the command's help string, since `tests/test_docsync.py` requires them to match exactly.\n- `--width` is parsed with `type=int` in argparse, like `top --k` and `near --max`. A non-integer value is rejected by argparse, not by `wrap`.\n- Empty or whitespace-only input returns `\"\"`, so the CLI prints a blank line.\n- Changes are uncommitted, as you asked.\n\nSTATUS: done"
+   },
+   "task": "wrap",
+   "claim_commit": "a53ad9822f9d61b8cad1e767ab40c1f857de104d"
+  }
+ ]
+}

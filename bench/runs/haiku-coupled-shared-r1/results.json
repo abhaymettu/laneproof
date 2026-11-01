@@ -1,0 +1,171 @@
+{
+ "condition": "shared",
+ "suite": "coupled",
+ "rep": 1,
+ "model": "haiku",
+ "parallel": 4,
+ "wall_seconds": 167.2,
+ "final_commit": "1474816ac4bd67d7eb1f061c282b86a4ea0e45ad",
+ "lanes": [
+  {
+   "seconds": 50.9,
+   "claim": "blocked",
+   "usage": {
+    "turns": 14,
+    "input_tokens": 26,
+    "output_tokens": 7113,
+    "cache_read_tokens": 147871,
+    "cache_write_tokens": 12866,
+    "runs": 1,
+    "session_id": "413875c2-2815-427e-813e-7c2a3295d7a2",
+    "final": "The README and registry now agree, and `tests/test_docsync.py` guards that for every command in `COMMANDS`. The full `python3 -m unittest` run still fails, though, because of a file I didn't write.\n\n**What I did**\n- **`tests/test_docsync.py`** (new): parses every `| \\`name\\` | cell |` row in README.md and asserts that each command in `COMMANDS` has a row whose cell equals its `help` string exactly. A missing row also fails.\n- **README.md**: the `dur` command was registered (by another agent working in the same tree) but had no row. I added `| \\`dur\\` | convert a duration like 1h30m to seconds, or seconds to 1h30m |`, matching its help string. The other rows already matched, so I didn't change them.\n- **CHANGELOG.md**: added a bullet under `## Unreleased` that names `test_docsync` in backticks and mentions the `dur` row.\n\n**Checks**\n- c1: I copied the tree to scratch, changed one README cell (`count the words in the text` \u2192 `count words`), and `test_docsync` failed. The check does catch drift.\n- c2: `test_docsync` passes on the live tree, and I confirmed each of the four rows matches its help string.\n- c3: the bullet is in place.\n- c4: **not met.** The full suite gives 22 tests, 2 errors, both in `tests/test_mdtable.py` (another agent's file): `contextlib.redirect_stdin` doesn't exist in Python's `contextlib`. Those tests need a different stdin swap, such as `unittest.mock.patch(\"sys.stdin\", ...)`. I didn't edit that file because it's another agent's in-progress work. The `test_docs`, `test_cli`, `test_core` and `test_docsync` modules all pass.\n\nI didn't commit anything.\n\nSTATUS: blocked: `python3 -m unittest` fails with 2 errors in `tests/test_mdtable.py` (`contextlib.redirect_stdin` does not exist); that file belongs to another agent's in-progress work, so I left it alone. Everything I was asked to do is done and passes."
+   },
+   "task": "docsync",
+   "claim_commit": "663b6ecd1600a150edaf6a6f50c7a9398dc670c1"
+  },
+  {
+   "seconds": 52.6,
+   "claim": "done",
+   "usage": {
+    "turns": 18,
+    "input_tokens": 22,
+    "output_tokens": 8238,
+    "cache_read_tokens": 146882,
+    "cache_write_tokens": 17979,
+    "runs": 1,
+    "session_id": "d435fe1d-1d69-4a6b-bf6b-af3b3d8538e8",
+    "final": "`dur` is in place and `python3 -m unittest` passes (32 tests, including the new ones). I didn't commit.\n\n**What changed**\n- `textkit/duration.py` (new): `parse_duration` and `format_duration`. Parsing uses one anchored regex over ASCII digits, so `1.5h`, `1h 30m`, `h` and `30m1h` all fail. Formatting drops zero parts and returns `0s` for zero.\n- `textkit/cli.py`: registered `dur VALUE`. All-ASCII-digit input goes through `format_duration(int(...))`; anything else goes through `parse_duration`. Errors reach the existing `error:` / exit 2 path.\n- `README.md`: a `dur` row in the Commands table.\n- `CHANGELOG.md`: a bullet under `## Unreleased` naming `` `dur` ``.\n- `tests/test_duration.py` (new): covers the examples, the error cases, a round trip, and the CLI (output, and exit 2 with `error:` on stderr for `30m1h`).\n\n**Shared-file conflict:** While I worked, another agent also added a `dur` row to the README, with wording matching my help string. That left two rows. I removed mine and kept theirs, because their `test_docsync` requires the README cell to match the help string, and theirs does. Their CHANGELOG bullet about the `dur` row is still there next to mine.\n\n**Checks:** The CLI spot checks give the expected output: `dur 1h30m` prints 5400, `dur 5400` prints `1h30m`, and `dur 30m1h` exits 2 with `error:` on stderr. `python3 -m textkit commands` lists `dur`.\n\nSTATUS: done"
+   },
+   "task": "duration",
+   "claim_commit": "8ab5916e944f366a1d3c0b920f8a4b7e34f8b905"
+  },
+  {
+   "seconds": 48.5,
+   "claim": "blocked",
+   "usage": {
+    "turns": 17,
+    "input_tokens": 20,
+    "output_tokens": 9497,
+    "cache_read_tokens": 133381,
+    "cache_write_tokens": 18193,
+    "runs": 1,
+    "session_id": "b8b85822-e510-4c77-a6fc-4bec552f9b27",
+    "final": "The `--json` option is in place and its own tests pass, but `python3 -m unittest` does not pass yet. The two remaining errors are in `tests/test_mdtable.py`, which another agent is writing. It calls `contextlib.redirect_stdin`, which does not exist, so I left that file alone.\n\n**What changed**\n- `textkit/cli.py`: `main()` takes a global `--json` flag. When it is set, the command runs with stdout captured, and `main()` prints one object: `{\"command\", \"exit\", \"output\"}`. Each output line is one entry, without its newline, and blank lines are kept. Without the flag, the code path is the same as before. The ValueError handling moved into a small `_run()` helper, which both paths use. Commands are not touched, so commands added later get the option automatically.\n- `README.md`: a bullet in Conventions documents `--json`, its shape, and the error behaviour.\n- `CHANGELOG.md`: a bullet under `## Unreleased` names `` `--json` ``.\n- `tests/test_json.py` (new, 6 tests): the shout output shape, the same shape for every registered command, `commands` output lines, blank lines kept, a ValueError giving exit 2 with `error:` on stderr and `\"exit\": 2` in the JSON (using a temporary test-only command), and plain output without the flag. All 6 pass.\n\n**Manual checks:** `--json shout hi` prints `{\"command\": \"shout\", \"exit\": 0, \"output\": [\"HI\"]}`. `--json count \"a b c\"` gives output `[\"3\"]`. Running `--json shout` with no argument exits 2 through argparse. That is argparse's usage error, not a ValueError, so it is outside the `--json` path.\n\n**Test status:** 22 tests run, 2 errors, both in `tests/test_mdtable.py::test_cli_prints_table` and `test_cli_ragged_csv_exits_2`. They fail because `contextlib.redirect_stdin` does not exist. That is in another agent's file, not in my change. The `dur` README-row failure from earlier is gone now.\n\n**Choices I made**\n- `--json` is a top-level flag only. Putting it after the command is an argparse error, which matches \"given before the command\".\n- Output is captured by redirecting stdout, so a command's printed lines are gathered without changing the command code.\n\nSTATUS: blocked: `python3 -m unittest` fails in tests/test_mdtable.py (another agent's file: `contextlib.redirect_stdin` does not exist in the stdlib). The --json work itself is complete and its tests pass."
+   },
+   "task": "jsonout",
+   "claim_commit": "ffcbf554bf15d8fae86798163a47c484fa65d463"
+  },
+  {
+   "seconds": 50.5,
+   "claim": "done",
+   "usage": {
+    "turns": 15,
+    "input_tokens": 16,
+    "output_tokens": 9943,
+    "cache_read_tokens": 106004,
+    "cache_write_tokens": 17810,
+    "runs": 1,
+    "session_id": "3d009b0d-5249-415e-a9ca-beb147962967",
+    "final": "`mdtable` is in place: `to_markdown` in `textkit/mdtable.py`, the CLI command in `textkit/cli.py`, a README row, a CHANGELOG bullet, and `tests/test_mdtable.py`. `python3 -m unittest` runs 32 tests and all pass.\n\nAcceptance checks:\n- **c1, c2:** Covered by the unit tests: header, separator and rows; whitespace stripping; pipe escaping; ValueError for no rows, an empty header, and short or long rows.\n- **c3:** `printf 'a,b\\n1,2\\n' | python3 -m textkit mdtable` prints the three-line table. The ragged input `a,b` then `1` exits 2 with `error: row 2 has 1 cells, header has 2` on stderr.\n- **c4:** The README has an `mdtable` row, and `python3 -m textkit commands` lists `mdtable`.\n- **c5:** CHANGELOG.md has an `mdtable` bullet under `## Unreleased`.\n- **c6:** `tests/test_mdtable.py` covers the function and the CLI, and the full suite passes.\n\nThings to know:\n- **Shared file conflict in `cli.py`:** While I worked, another agent rewrote the import lines and dropped my `csv` and `mdtable` imports. I restored them and kept their `duration` import, so `cli.py` now imports `csv` and `from . import core, duration, mdtable`.\n- **Duplicate `dur` row in README:** Another agent added two `dur` rows to the Commands table. The docs test uses a set, so it still passes, but the table has a duplicate. I left it for them to resolve.\n- **Blank CSV lines:** A blank line in the input becomes an empty row and gets reported as a ragged-row error (exit 2). The spec didn't say whether to skip blank lines, so I kept that behavior.\n- **Test stdin patching:** `contextlib` has no `redirect_stdin`, so the test helper patches `sys.stdin` with `unittest.mock`.\n\nI did not commit.\n\nSTATUS: done"
+   },
+   "task": "mdtable",
+   "claim_commit": "31c93aaccc28ff5cb9ed217b5d3d314dc04c9acd"
+  },
+  {
+   "seconds": 78.6,
+   "claim": "blocked",
+   "usage": {
+    "turns": 24,
+    "input_tokens": 34,
+    "output_tokens": 11912,
+    "cache_read_tokens": 338140,
+    "cache_write_tokens": 26426,
+    "runs": 1,
+    "session_id": "8fd6eadf-8ea0-4776-9564-f14f398dacdc",
+    "final": "`near` is implemented and its checks pass, but `python3 -m unittest` still fails on one test that involves `rot` and `slug`, which other agents are adding. My part is done.\n\n**What I added**\n- `textkit/near.py`: `levenshtein(a, b)` (two-row DP) and `closest(word, candidates, max_distance=2)`. It raises `ValueError` when `max_distance < 0`, even if the candidate list is empty. Ties go to the first candidate, and an empty list returns `None`.\n- `textkit/cli.py`: `near WORD CANDIDATE... [--max N]`, with `--max` as an int defaulting to 2. It prints the match, or `no match` to stderr with exit 1. A negative `--max` goes through the normal `error:` path with exit 2.\n- `README.md`: a `near` row in the Commands table. Its text matches the help string, so `test_docsync` passes.\n- `CHANGELOG.md`: a bullet under `## Unreleased` naming `` `near` ``.\n- `tests/test_near.py`: 18 tests covering the function and the CLI, including `--json`.\n\n**Checks**\n- `tests.test_near`, `test_docs`, `test_docsync`, and `test_cli` pass (22 tests).\n- `python3 -m textkit near helo hello help` prints `hello`.\n- `near zzzz hello` prints `no match` to stderr and exits 1.\n- `near helo hello --max -1` prints `error: max_distance must not be negative: -1` and exits 2.\n- `python3 -m textkit commands` lists `near`.\n\n**Blocking issue (not in `near`)**\n- `tests/test_json.py::test_every_command_uses_the_same_shape` errors. It runs every registered command with `\"hi\"` for each declared arg, and that fails for `rot` (its `--n` option gets treated as a positional) and `slug`. `near` passes this check. Those two commands belong to other agents, so I left them alone.\n- The full suite is 82 tests with 1 error.\n\n**Shared-file race**\n- While I was editing, another agent's write dropped my `near` import from `textkit/cli.py`. I restored it. Their later edit added `rot` to the import, so both are there now.\n\nSTATUS: blocked: `python3 -m unittest` fails in `tests/test_json.py` because the `rot` and `slug` commands (other agents' work) reject the generic args that test passes. `near` itself is complete and verified."
+   },
+   "task": "near",
+   "claim_commit": "fa15af2f9065547e80ee0b1099c7cd6acf1ec142"
+  },
+  {
+   "seconds": 65.5,
+   "claim": "blocked",
+   "usage": {
+    "turns": 14,
+    "input_tokens": 22,
+    "output_tokens": 7693,
+    "cache_read_tokens": 164703,
+    "cache_write_tokens": 17522,
+    "runs": 1,
+    "session_id": "1f21566e-b8a1-411b-84ba-8ceae827ae40",
+    "final": "The `roman` command, library functions, docs, and tests are in place, and my tests pass. The full `python3 -m unittest` run does not pass yet, and the failure is in another agent's `rot` command.\n\n**What I added**\n- `textkit/roman.py`: `to_roman(n)` for 1..3999 and `from_roman(s)`. `from_roman` accepts only the canonical form, checked with a regex, so `IIII`, `IC`, `VX`, `mcm`, `\"\"` and `MMMM` all raise `ValueError`.\n- `textkit/cli.py`: a `roman VALUE` command. All digits go to `to_roman`, anything else goes to `from_roman`. Errors go through the existing `error:` / exit 2 path.\n- `README.md`: a `roman` row in the Commands table. Its text matches the help string, so `test_docsync` passes.\n- `CHANGELOG.md`: a bullet under `## Unreleased` that names `roman` in backticks.\n- `tests/test_roman.py`: 9 tests covering the library functions, round-trip for every value in 1..3999, and the CLI cases.\n\n**Verified**\n- `roman 1994` prints `MCMXCIV`, `roman MCMXCIV` prints `1994`, and `roman IIII` prints `error: ...` to stderr and exits 2.\n- Round-trip holds for all 3999 values.\n- `python3 -m textkit commands` lists `roman`.\n- `tests/test_roman.py` passes 9/9.\n\n**What is blocking c6**\nThe full suite has one error: `tests/test_json.py::test_every_command_uses_the_same_shape`. That test calls every registered command with `\"hi\"` for each declared arg, as if all args were positional. The `rot` command, added by another agent, declares `--n` as an option, so `rot hi hi` is rejected by argparse with exit 2. The fix belongs in either `rot`'s argument design or that test's harness. I didn't change either, since they're outside my scope and another agent is working on them.\n\nI made no commits.\n\nSTATUS: blocked: full `python3 -m unittest` fails in tests/test_json.py::test_every_command_uses_the_same_shape because the `rot` command's `--n` option is not positional, which the test's generic harness doesn't handle. The roman work itself is complete and its tests pass."
+   },
+   "task": "roman",
+   "claim_commit": "bc27e8eefb21912626ec0277601557668a9da725"
+  },
+  {
+   "seconds": 77.6,
+   "claim": "done",
+   "usage": {
+    "turns": 23,
+    "input_tokens": 24,
+    "output_tokens": 10467,
+    "cache_read_tokens": 216701,
+    "cache_write_tokens": 24307,
+    "runs": 1,
+    "session_id": "7a25a130-97ab-459f-b8bb-d8fab6dd5377",
+    "final": "`rot` is in place: `textkit/rot.py`, the CLI command, a README row, a CHANGELOG bullet, and `tests/test_rot.py`. `python3 -m unittest` runs 82 tests and passes.\n\nI checked each acceptance criterion:\n- **c1:** `rot` wraps, keeps case, leaves other characters alone, and handles negative and large `n`.\n- **c2:** non-int `n` raises `ValueError`, including floats, strings, `None`, and bools.\n- **c3:** `rot \"Hello, World!\"` prints `Uryyb, Jbeyq!`, `rot abc --n -1` prints `zab`, and `rot abc --n 1.5` prints `error: n must be an integer: '1.5'` to stderr and exits 2.\n- **c4:** the README has a `rot` row, and `commands` lists `rot`. The docsync test also passes.\n- **c5:** CHANGELOG has a `rot` bullet under `## Unreleased`.\n- **c6:** `tests/test_rot.py` covers the function and the CLI, and the full suite passes.\n\nDecisions to review:\n- **`--n` is parsed in the command, not by argparse.** I used `type=str` and converted with `int()`, raising `ValueError` on failure. That way `--n 1.5` goes through the same error path as other commands, and it works with `--json`.\n- **I changed `tests/test_json.py`.** Its generic test passed one `\"hi\"` per registered argument, so it broke on `rot`'s `--n` flag. It now passes only positional arguments. `slug`'s `--sep` flag would have hit the same problem.\n\nOther agents were editing `cli.py`, `README.md`, and `CHANGELOG.md` during this work. Their writes twice dropped my `rot` import from `cli.py`, so I re-added it and confirmed it's present. Their `near`, `roman`, and `slug` additions are still there. I did not commit.\n\nSTATUS: done"
+   },
+   "task": "rot",
+   "claim_commit": "cbd39cb6351ace307fc7553ee8459968b8134548"
+  },
+  {
+   "seconds": 84.7,
+   "claim": "done",
+   "usage": {
+    "turns": 20,
+    "input_tokens": 26,
+    "output_tokens": 8466,
+    "cache_read_tokens": 225140,
+    "cache_write_tokens": 20290,
+    "runs": 1,
+    "session_id": "db0fad07-4ab0-4ec6-a52b-df034e5c69c9",
+    "final": "I added `slugify` and the `slug` command, and the full suite passes (82 tests, `python3 -m unittest`).\n\n**What I did**\n- **`textkit/slug.py`**: `slugify(text, sep=\"-\")` NFKD-normalizes, drops non-ASCII, lower-cases, and joins the `[a-z0-9]+` runs with `sep`. That gives single separators and none at the ends. It raises `ValueError` when nothing is left.\n- **`textkit/cli.py`**: registered `slug TEXT [--sep SEP]` with the help string \"turn text into a URL-friendly slug\". The import line now includes `slug`.\n- **`README.md`**: added the `slug` row, with the help text copied exactly so `test_docsync` matches.\n- **`CHANGELOG.md`**: added a bullet under `## Unreleased` that names `` `slug` ``.\n- **`tests/test_slug.py`**: 11 tests covering the function (examples, accents, separator runs, `--sep`, the `ValueError` cases) and the CLI (output, `--sep`, exit 2 with `error:` on stderr, listed in `commands`).\n\n**Checks**\n- `slug \"H\u00e9llo, W\u00f6rld!\"` \u2192 `hello-world`\n- `slug \"a b\" --sep _` \u2192 `a_b`\n- `slug \"!!!\"` \u2192 `error: nothing left to make a slug from: '!!!'` on stderr, exit 2\n- `commands` lists `slug`\n\n**Notes**\n- The `test_json` helper originally counted `--sep` as a positional argument, which broke the slug run. Another agent had already fixed that helper on disk, so I didn't change it.\n- I didn't touch the `rot` and `near` work that other agents are doing in the same tree. Their earlier in-progress state caused the suite errors I saw; the suite now passes.\n- I didn't commit, as requested.\n\nSTATUS: done"
+   },
+   "task": "slug",
+   "claim_commit": "24d9c291f0daaf6df807600381da7f66464cce79"
+  },
+  {
+   "seconds": 36.2,
+   "claim": "done",
+   "usage": {
+    "turns": 10,
+    "input_tokens": 14,
+    "output_tokens": 5840,
+    "cache_read_tokens": 88052,
+    "cache_write_tokens": 13525,
+    "runs": 1,
+    "session_id": "58bd5089-808b-453d-aada-032cd508d844",
+    "final": "`top` is in place. `python3 -m unittest` passes (94 tests, up from 82), and the spec's CLI examples produce the expected output.\n\nWhat I changed:\n- **`textkit/topwords.py`**: `top_words(text, k)` lower-cases the text, takes runs of `[a-z]+` as words, and sorts by count then alphabetically. `k < 1` raises `ValueError`.\n- **`textkit/cli.py`**: registered `top TEXT --k N` (default 3) after `slug`. It prints `word count` per line. The `ValueError` path already prints `error: ...` to stderr and exits 2.\n- **`README.md`**: added the `top` row to the Commands table. The existing doc-sync tests check that its description matches the help string, and they pass.\n- **`CHANGELOG.md`**: added a bullet under `## Unreleased` that names `` `top` ``.\n- **`tests/test_topwords.py`**: 12 tests covering the function (counting, tie order, case, non-letter splitting, non-ASCII letters, short text, `k` validation) and the CLI (spec example, default `k`, `--k 0` error, `--json`).\n\nChoices I made:\n- The non-letter rule is applied after lower-casing, following the spec's order. The one edge case is a character like the Kelvin sign (U+212A), which lower-cases to ASCII `k` and so counts as a letter.\n- The `--k` help text is `how many words to list (default 3)`. It is not part of the README table, so the doc-sync check doesn't see it.\n\nI didn't commit, and I didn't touch the other agents' untracked files beyond the shared `cli.py`, `README.md`, and `CHANGELOG.md` edits, which I made as small single-hunk insertions.\n\nSTATUS: done"
+   },
+   "task": "topwords",
+   "claim_commit": "ac0448be74155e3fccf567b7f43f094f41aceddc"
+  },
+  {
+   "seconds": 39.6,
+   "claim": "done",
+   "usage": {
+    "turns": 13,
+    "input_tokens": 16,
+    "output_tokens": 7095,
+    "cache_read_tokens": 117887,
+    "cache_write_tokens": 18057,
+    "runs": 1,
+    "session_id": "cc6bb70f-298d-45c9-a769-03595a6373eb",
+    "final": "`wrap` is added: `textkit/wrap.py`, a `wrap TEXT [--width N]` command (default 40), a README row, a CHANGELOG bullet, and `tests/test_wrap.py`. The full suite passes: 107 tests, up from 82 before my changes.\n\n- **Function:** `wrap(text, width)` splits paragraphs on whitespace-only lines, collapses whitespace inside each one, fills lines greedily, and joins paragraphs with exactly one empty line. Words are never split. A word longer than `width` sits alone on its line. `width < 1` raises `ValueError`.\n- **CLI checks:**\n  - `wrap \"aaa bbb ccc\" --width 7` prints `aaa bbb` and `ccc`.\n  - `wrap x --width 0` prints `error: width must be at least 1: 0` to stderr and exits 2.\n  - `wrap` appears in `python3 -m textkit commands`.\n- **Other changes:** I used the help string as the README cell, since `test_docsync` requires the two to match. The CHANGELOG bullet is at the end of `## Unreleased`.\n- **Shared files:** another agent added a `top` command to `cli.py`, `README.md` and `CHANGELOG.md` while I was working. I made small targeted edits, so their lines are intact.\n- **Not done:** I did not commit, as you asked.\n\nSTATUS: done"
+   },
+   "task": "wrap",
+   "claim_commit": "c35dc1ebe7a49afc407018d0ca01c9f281d81029"
+  }
+ ]
+}

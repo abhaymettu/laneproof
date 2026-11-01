@@ -1,0 +1,39 @@
+id = "wrap"
+title = "word wrap"
+scope = ["textkit/*", "tests/*", "README.md", "CHANGELOG.md"]
+protect = ["tests/test_docs.py", "tests/test_core.py", "tests/test_cli.py"]
+check = "python3 -m unittest -q"
+prompt = """This is the textkit repository (read README.md for its conventions).
+
+Add `textkit/wrap.py` with `wrap(text, width)`:
+- Paragraphs are separated by one or more blank lines (lines that are empty or only whitespace). In the output, paragraphs are separated by exactly one empty line, with no leading or trailing blank lines.
+- Inside a paragraph, all whitespace (including newlines) collapses to single spaces, then words are filled greedily: each line takes as many words as fit within `width` characters.
+- A word longer than `width` goes on its own line, unbroken. Hyphenated words are never split.
+- width < 1 raises ValueError.
+Return the wrapped text as one string joined with "\\n" (no trailing newline).
+Add a CLI command `wrap TEXT [--width N]` (default 40) that prints the result.
+"""
+
+[[criteria]]
+id = "c1"
+text = "wrap fills greedily, keeps paragraphs, never breaks long or hyphenated words"
+
+[[criteria]]
+id = "c2"
+text = "wrap raises ValueError when width < 1"
+
+[[criteria]]
+id = "c3"
+text = "`python3 -m textkit wrap \"aaa bbb ccc\" --width 7` prints two lines `aaa bbb` and `ccc`; `wrap x --width 0` exits 2 with `error:` on stderr"
+
+[[criteria]]
+id = "c4"
+text = "the README \"Commands\" table has a row for `wrap`, and `python3 -m textkit commands` lists it"
+
+[[criteria]]
+id = "c5"
+text = "CHANGELOG.md has a new bullet under `## Unreleased` that names `wrap` in backticks"
+
+[[criteria]]
+id = "c6"
+text = "tests/test_wrap.py covers the function and the CLI command, and `python3 -m unittest` passes"

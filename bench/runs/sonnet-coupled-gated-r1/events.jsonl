@@ -1,0 +1,84 @@
+{"op": "reserve", "id": "R001", "holder": "docsync", "used": 1, "cap": 4, "at": "2026-11-01T06:42:30"}
+{"op": "claim", "id": "R001", "at": "2026-11-01T06:42:30"}
+{"op": "start", "lane": "docsync-R001", "reservation": "R001", "pid": 48975, "at": "2026-11-01T06:42:30"}
+{"op": "reserve", "id": "R002", "holder": "duration", "used": 2, "cap": 4, "at": "2026-11-01T06:42:30"}
+{"op": "claim", "id": "R002", "at": "2026-11-01T06:42:30"}
+{"op": "start", "lane": "duration-R002", "reservation": "R002", "pid": 48985, "at": "2026-11-01T06:42:30"}
+{"op": "reserve", "id": "R003", "holder": "jsonout", "used": 3, "cap": 4, "at": "2026-11-01T06:42:30"}
+{"op": "claim", "id": "R003", "at": "2026-11-01T06:42:30"}
+{"op": "start", "lane": "jsonout-R003", "reservation": "R003", "pid": 49006, "at": "2026-11-01T06:42:30"}
+{"op": "reserve", "id": "R004", "holder": "mdtable", "used": 4, "cap": 4, "at": "2026-11-01T06:42:30"}
+{"op": "claim", "id": "R004", "at": "2026-11-01T06:42:30"}
+{"op": "start", "lane": "mdtable-R004", "reservation": "R004", "pid": 49014, "at": "2026-11-01T06:42:30"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T06:42:30"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T06:42:33"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T06:42:36"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T06:42:39"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T06:42:42"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T06:42:45"}
+{"op": "land", "lane": "docsync-R001", "task": "docsync", "commit": "425b026f7873c0c82c8803059948b5a35229148b", "replays": 5, "at": "2026-11-01T06:42:48"}
+{"op": "release", "id": "R001", "reason": "landed", "at": "2026-11-01T06:42:48"}
+{"op": "reserve", "id": "R005", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T06:42:51"}
+{"op": "claim", "id": "R005", "at": "2026-11-01T06:42:51"}
+{"op": "start", "lane": "near-R005", "reservation": "R005", "pid": 52079, "at": "2026-11-01T06:42:51"}
+{"op": "reserve-refused", "holder": "roman", "used": 4, "cap": 4, "at": "2026-11-01T06:42:51"}
+{"op": "land", "lane": "jsonout-R003", "task": "jsonout", "commit": "25edf7461d9dd009d0414cd8c50f861c89a049d1", "replays": 7, "at": "2026-11-01T06:42:56"}
+{"op": "release", "id": "R003", "reason": "landed", "at": "2026-11-01T06:42:56"}
+{"op": "reserve", "id": "R006", "holder": "roman", "used": 4, "cap": 4, "at": "2026-11-01T06:43:06"}
+{"op": "claim", "id": "R006", "at": "2026-11-01T06:43:06"}
+{"op": "start", "lane": "roman-R006", "reservation": "R006", "pid": 54415, "at": "2026-11-01T06:43:07"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T06:43:07"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T06:43:10"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T06:43:13"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T06:43:16"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T06:43:19"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T06:43:22"}
+{"op": "land", "lane": "near-R005", "task": "near", "commit": "35413f4dfddd42609dc866c04479a7759c544c77", "replays": 10, "at": "2026-11-01T06:43:26"}
+{"op": "release", "id": "R005", "reason": "landed", "at": "2026-11-01T06:43:26"}
+{"op": "reserve", "id": "R007", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T06:43:29"}
+{"op": "claim", "id": "R007", "at": "2026-11-01T06:43:29"}
+{"op": "start", "lane": "rot-R007", "reservation": "R007", "pid": 57203, "at": "2026-11-01T06:43:29"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:43:29"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:43:37"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:43:40"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:43:48"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:43:51"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:43:54"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:43:57"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:44:00"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:44:03"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:44:07"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:44:10"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T06:44:13"}
+{"op": "land", "lane": "duration-R002", "task": "duration", "commit": "086521f1e7f8975c04709231df200ebfd7c92943", "replays": 10, "at": "2026-11-01T06:44:20"}
+{"op": "release", "id": "R002", "reason": "landed", "at": "2026-11-01T06:44:20"}
+{"op": "land", "lane": "rot-R007", "task": "rot", "commit": "cba66a63c22d3b7b849175478280295054113b57", "replays": 9, "at": "2026-11-01T06:44:31"}
+{"op": "release", "id": "R007", "reason": "landed", "at": "2026-11-01T06:44:31"}
+{"op": "reserve", "id": "R008", "holder": "slug", "used": 3, "cap": 4, "at": "2026-11-01T06:44:34"}
+{"op": "claim", "id": "R008", "at": "2026-11-01T06:44:34"}
+{"op": "start", "lane": "slug-R008", "reservation": "R008", "pid": 64255, "at": "2026-11-01T06:44:34"}
+{"op": "reserve", "id": "R009", "holder": "topwords", "used": 4, "cap": 4, "at": "2026-11-01T06:44:34"}
+{"op": "claim", "id": "R009", "at": "2026-11-01T06:44:34"}
+{"op": "start", "lane": "topwords-R009", "reservation": "R009", "pid": 64308, "at": "2026-11-01T06:44:35"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:35"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:38"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:41"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:44"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:47"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:50"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:53"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:56"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:44:59"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T06:45:02"}
+{"op": "land", "lane": "roman-R006", "task": "roman", "commit": "16d84cbbd4547e8a34cca0349dc7a0159a18ea3d", "replays": 10, "at": "2026-11-01T06:45:10"}
+{"op": "release", "id": "R006", "reason": "landed", "at": "2026-11-01T06:45:10"}
+{"op": "land", "lane": "topwords-R009", "task": "topwords", "commit": "efa4889f7db56cef7bfc1396b3c5a94ee9340e04", "replays": 9, "at": "2026-11-01T06:45:15"}
+{"op": "release", "id": "R009", "reason": "landed", "at": "2026-11-01T06:45:15"}
+{"op": "reserve", "id": "R010", "holder": "wrap", "used": 3, "cap": 4, "at": "2026-11-01T06:45:18"}
+{"op": "claim", "id": "R010", "at": "2026-11-01T06:45:18"}
+{"op": "start", "lane": "wrap-R010", "reservation": "R010", "pid": 68773, "at": "2026-11-01T06:45:18"}
+{"op": "land", "lane": "wrap-R010", "task": "wrap", "commit": "60f92050976a747d922d2306c8caf6dd8ef4f850", "replays": 9, "at": "2026-11-01T06:46:16"}
+{"op": "release", "id": "R010", "reason": "landed", "at": "2026-11-01T06:46:16"}
+{"op": "land", "lane": "slug-R008", "task": "slug", "commit": "5027030fd7a6065d7018407e142c9768ef5ad905", "replays": 9, "at": "2026-11-01T06:46:21"}
+{"op": "release", "id": "R008", "reason": "landed", "at": "2026-11-01T06:46:21"}
+{"op": "release", "id": "R004", "reason": "failed", "at": "2026-11-01T06:46:30"}

@@ -1,0 +1,171 @@
+{
+ "condition": "seq",
+ "suite": "coupled",
+ "rep": 3,
+ "model": "sonnet",
+ "parallel": 4,
+ "wall_seconds": 159.4,
+ "final_commit": "580dd81adb517970246ea77426ccba33efcc26ca",
+ "lanes": [
+  {
+   "seconds": 16.0,
+   "claim": "done",
+   "usage": {
+    "turns": 6,
+    "input_tokens": 10,
+    "output_tokens": 1369,
+    "cache_read_tokens": 32157,
+    "cache_write_tokens": 4160,
+    "runs": 1,
+    "session_id": "6f2f40fe-babb-46e0-bfc8-69165cdedea0",
+    "final": "I added `tests/test_docsync.py` and a CHANGELOG bullet. `python3 -m unittest` passes (6 tests).\n\n- **README and help strings:** the README cells already matched every `help` string exactly, so I changed neither the README nor `textkit/cli.py`.\n- **New test:** it loops over every command in `COMMANDS` and compares the README table cell with the `help` string. Commands added later are covered automatically. A command with no README row also fails.\n- **Failure check:** I temporarily changed one README cell and the suite failed. I then restored it with `git checkout README.md`.\n- **CHANGELOG:** there is a new bullet under `## Unreleased` that names `test_docsync` in backticks.\n\nMy first attempt at the CHANGELOG edit with `sed` failed on macOS. I redid it with the edit tool, and `git status` shows only `CHANGELOG.md` modified plus the new test file.\n\nSTATUS: done"
+   },
+   "task": "docsync",
+   "claim_commit": "fda2aead0d3921472d0c7f0b113f2c38af29e70d"
+  },
+  {
+   "seconds": 20.0,
+   "claim": "done",
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 1894,
+    "cache_read_tokens": 26067,
+    "cache_write_tokens": 5207,
+    "runs": 1,
+    "session_id": "9d20c166-3e6d-498c-860a-cc39a658fca7",
+    "final": "I added `textkit/duration.py` with `parse_duration` and `format_duration`, plus the `dur VALUE` command. `python3 -m unittest` passes (10 tests), and I ran the CLI by hand:\n\n- **`dur 1h30m`:** prints `5400`.\n- **`dur 5400`:** prints `1h30m`.\n- **`dur 30m1h`:** prints `error: invalid duration: '30m1h'` on stderr and exits 2.\n- **`commands`:** lists `dur`.\n\nThe README Commands table has a `dur` row, with the help text matching the registered help string as `test_docsync` requires. CHANGELOG.md has a new bullet under `## Unreleased` that names `dur` in backticks. `tests/test_duration.py` covers the functions and the CLI command.\n\nI didn't run the invalid inputs through the CLI by hand. `parse_duration` raising `ValueError` for each of the seven listed inputs, and `format_duration(-1)` doing the same, are covered only by the unit tests.\n\nSTATUS: done"
+   },
+   "task": "duration",
+   "claim_commit": "b0e3a2702d6fb605f78d80f9ffa40f166089ef47"
+  },
+  {
+   "seconds": 15.0,
+   "claim": "done",
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 1828,
+    "cache_read_tokens": 25940,
+    "cache_write_tokens": 5017,
+    "runs": 1,
+    "session_id": "a8cf901a-4a1a-43a4-9802-8cfc7e16f637",
+    "final": "I added a global `--json` option, implemented once in `main()` in `textkit/cli.py`, so it applies to every registered command, including ones added later. `python3 -m unittest` passes (14 tests), and I ran the CLI by hand to check it.\n\n- **Success:** `python3 -m textkit --json shout hi` prints `{\"command\": \"shout\", \"exit\": 0, \"output\": [\"HI\"]}`.\n- **Error:** `python3 -m textkit --json dur zz` puts `error: invalid duration: 'zz'` on stderr, exits 2, and prints the JSON object with `\"exit\": 2` and an empty `output` on stdout.\n- **Without `--json`:** nothing changes.\n- **Docs:** `README.md` documents `--json` in its Conventions section, and `CHANGELOG.md` has a new bullet naming `` `--json` `` under `## Unreleased`.\n- **Tests:** `tests/test_json.py` covers the success shape, a multi-line command, the error case, and unchanged plain output.\n\nSTATUS: done"
+   },
+   "task": "jsonout",
+   "claim_commit": "8801ff42c5696039a92f991fe8b8d985c698f068"
+  },
+  {
+   "seconds": 15.0,
+   "claim": "done",
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 2073,
+    "cache_read_tokens": 26633,
+    "cache_write_tokens": 5654,
+    "runs": 1,
+    "session_id": "1ccc45a8-1ba2-484e-9346-58adcc7f2152",
+    "final": "I added `mdtable`, and the work meets all six acceptance criteria. `python3 -m unittest` passes (21 tests), and I ran the CLI by hand to check the output.\n\n- **`to_markdown`:** It's in `textkit/mdtable.py` and follows your spec. A header-only table is valid and prints just the header and separator.\n- **CLI:** `mdtable` is registered in `textkit/cli.py` and reads CSV from stdin. `printf \"a,b\\n1,2\\n\" | python3 -m textkit mdtable` prints the three-line table. A ragged CSV prints `error: row 1 has 1 cells, expected 2` to stderr and exits 2.\n- **Docs:** The README \"Commands\" table has an `mdtable` row, and `python3 -m textkit commands` lists it. CHANGELOG.md has a new bullet under `## Unreleased` that names `mdtable` in backticks.\n- **Tests:** `tests/test_mdtable.py` covers the function and the CLI.\n\nSTATUS: done"
+   },
+   "task": "mdtable",
+   "claim_commit": "a65475888879ef0b3d778c9fcc975e6b241b0442"
+  },
+  {
+   "seconds": 15.4,
+   "claim": "done",
+   "usage": {
+    "turns": 3,
+    "input_tokens": 6,
+    "output_tokens": 2041,
+    "cache_read_tokens": 18517,
+    "cache_write_tokens": 5303,
+    "runs": 1,
+    "session_id": "e94e9e81-44ca-4119-b9b9-3cfd81e5ed55",
+    "final": "I added `textkit/near.py` with `levenshtein` and `closest`, and a `near WORD CANDIDATE... [--max N]` command in `textkit/cli.py`. `python3 -m unittest` passes (25 tests), and `python3 -m textkit commands` lists `near`.\n\n- **Tests:** `tests/test_near.py` covers the functions and the CLI.\n- **CLI behaviour:** The tests check all three CLI cases from c3: `near helo hello help` prints `hello`, `near zzzz hello` prints `no match` to stderr and exits 1, and `--max -1` exits 2 with `error:` on stderr. I also ran the first one by hand.\n- **Docs:** I added the README \"Commands\" row for `near` and a bullet naming `near` under `## Unreleased` in `CHANGELOG.md`. The row text matches the command's help string, as the existing docsync test expects.\n\nSTATUS: done"
+   },
+   "task": "near",
+   "claim_commit": "9ea0f324e1bc92264656a7ec6e9c4b75ca95093d"
+  },
+  {
+   "seconds": 15.3,
+   "claim": "done",
+   "usage": {
+    "turns": 3,
+    "input_tokens": 6,
+    "output_tokens": 2120,
+    "cache_read_tokens": 18746,
+    "cache_write_tokens": 5523,
+    "runs": 1,
+    "session_id": "b2058c18-797b-4c61-82d3-cfdb823240da",
+    "final": "I added `textkit/roman.py` with `to_roman` and `from_roman`, plus the `roman` CLI command. `python3 -m unittest` passes (30 tests).\n\n- **Round trip:** the new tests check `from_roman(to_roman(n)) == n` for every n from 1 to 3999.\n- **Errors:** `to_roman` raises `ValueError` for 0, 4000 and negative numbers. `from_roman` raises it for `IIII`, `IC`, `VX`, `mcm`, `\"\"`, `MMMM`, `IIX` and `A`.\n- **CLI:** `roman IIII` prints `error: not a canonical roman numeral: 'IIII'` to stderr and exits 2. I ran that one by hand. The CLI tests cover `roman 1994` printing `MCMXCIV`, `roman MCMXCIV` printing `1994`, and the exit-2 error case.\n- **Docs:** `python3 -m textkit commands` lists `roman`. I added the README table row and a CHANGELOG bullet under `## Unreleased` that names `roman` in backticks.\n\nThe tests are in `tests/test_roman.py`. I didn't commit anything.\n\nSTATUS: done"
+   },
+   "task": "roman",
+   "claim_commit": "f1b58c0b0caeb4fe9a1e987e486b2a1678332153"
+  },
+  {
+   "seconds": 17.0,
+   "claim": "done",
+   "usage": {
+    "turns": 3,
+    "input_tokens": 6,
+    "output_tokens": 2211,
+    "cache_read_tokens": 19796,
+    "cache_write_tokens": 6711,
+    "runs": 1,
+    "session_id": "11b6ff27-9803-46da-8597-2629ed47ff05",
+    "final": "I added `rot` as a library function and a CLI command. `python3 -m unittest` passes (35 tests), and I ran each CLI example from c3 by hand.\n\n- **Function:** `textkit/rot.py` has `rot(text, n)`. It shifts ASCII letters with wrap-around and keeps their case. Negative and large `n` work, and other characters are unchanged. Any non-int `n` raises `ValueError`, including floats, strings and bools.\n- **CLI:** `python3 -m textkit rot TEXT [--n N]` defaults to 13. It's registered in `textkit/cli.py`.\n  - `rot \"Hello, World!\"` prints `Uryyb, Jbeyq!`.\n  - `rot abc --n -1` prints `zab`.\n  - `rot abc --n 1.5` exits 2 with `error:` on stderr.\n- **Docs:** `README.md` has a `rot` row in the Commands table, and `commands` lists it. `CHANGELOG.md` has a new bullet under `## Unreleased` that names `rot`.\n- **Tests:** `tests/test_rot.py` covers the function and the CLI.\n\nFor `--n 1.5`, the error comes from argparse's own `type=int` check, not from the library's `ValueError`. The stderr output is a usage line followed by `textkit rot: error: argument --n: invalid int value: '1.5'`. That meets c3, but it isn't the plain `error: <message>` line the README describes for library errors.\n\nSTATUS: done"
+   },
+   "task": "rot",
+   "claim_commit": "c2fb2a7193a31d75a4c9ffaa904a5abbee3dae19"
+  },
+  {
+   "seconds": 16.0,
+   "claim": "done",
+   "usage": {
+    "turns": 3,
+    "input_tokens": 6,
+    "output_tokens": 1718,
+    "cache_read_tokens": 19290,
+    "cache_write_tokens": 5748,
+    "runs": 1,
+    "session_id": "7fae58db-5dcd-4c60-99d5-ee20d09002a6",
+    "final": "`slugify(text, sep=\"-\")` is in `textkit/slug.py`, and `python3 -m textkit slug TEXT [--sep SEP]` prints the slug. `python3 -m unittest` passes (42 tests).\n\nI ran two of the CLI cases by hand:\n- `slug \"H\u00e9llo, W\u00f6rld!\"` prints `hello-world`.\n- `slug \"!!!\"` prints `error: nothing left to make a slug from` and exits 2.\n\nThe `--sep _` case and the `commands` listing are covered by the tests in `tests/test_slug.py`. I did not run them by hand.\n\nI also added the `slug` row to the README \"Commands\" table and a `slug` bullet under `## Unreleased` in `CHANGELOG.md`.\n\nText with no ASCII letters or digits, such as \"\u65e5\u672c\", also raises `ValueError`, because the non-ASCII characters are dropped and nothing is left.\n\nSTATUS: done"
+   },
+   "task": "slug",
+   "claim_commit": "393bbcba7ed9d59b91497b9aa0b91a6a147eaadb"
+  },
+  {
+   "seconds": 13.0,
+   "claim": "done",
+   "usage": {
+    "turns": 3,
+    "input_tokens": 6,
+    "output_tokens": 1725,
+    "cache_read_tokens": 19861,
+    "cache_write_tokens": 6429,
+    "runs": 1,
+    "session_id": "ccd85902-c3df-4b0c-a8ad-ad65d17bda57",
+    "final": "I added `top_words(text, k)` in `textkit/topwords.py` and the `top TEXT [--k N]` command (default 3). The full suite passes, 51 tests including the new ones. I also ran the two CLI cases from the criteria by hand:\n- `python3 -m textkit top \"b a b c a b\" --k 2` prints `b 3` then `a 2`.\n- `python3 -m textkit top x --k 0` prints `error: k must be at least 1` and exits 2.\n\nI added a `top` row to the README \"Commands\" table and a bullet naming `top` under `## Unreleased` in `CHANGELOG.md`. `tests/test_topwords.py` covers the function and the CLI command, including `top` appearing in `commands`.\n\nThe `top` row sits just above `shout`. That is the table's existing order, which isn't strictly alphabetical.\n\nSTATUS: done"
+   },
+   "task": "topwords",
+   "claim_commit": "b709127ea92b71c621310ffd4a7d475bbbe83a1c"
+  },
+  {
+   "seconds": 16.0,
+   "claim": "done",
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 2230,
+    "cache_read_tokens": 29313,
+    "cache_write_tokens": 7299,
+    "runs": 1,
+    "session_id": "b61d1668-84fd-4d6b-94ce-205fe7964df5",
+    "final": "I added `wrap(text, width)` in `textkit/wrap.py` and a `wrap TEXT [--width N]` CLI command (default width 40). `python3 -m unittest` passes (60 tests).\n\nI also ran the two CLI cases from c3 by hand:\n- `python3 -m textkit wrap \"aaa bbb ccc\" --width 7` prints `aaa bbb` and `ccc`.\n- `python3 -m textkit wrap x --width 0` prints `error: width must be at least 1` to stderr and exits 2.\n\nThe README \"Commands\" table has a `wrap` row, so `commands` lists it. CHANGELOG.md has a new `wrap` bullet under `## Unreleased`. `tests/test_wrap.py` covers the function and the CLI command.\n\nI chose the help string \"fill text into lines of at most N characters\". The existing docsync test requires the README cell to match it exactly.\n\nSTATUS: done"
+   },
+   "task": "wrap",
+   "claim_commit": "580dd81adb517970246ea77426ccba33efcc26ca"
+  }
+ ]
+}

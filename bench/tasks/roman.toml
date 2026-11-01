@@ -1,0 +1,37 @@
+id = "roman"
+title = "roman numerals"
+scope = ["textkit/*", "tests/*", "README.md", "CHANGELOG.md"]
+protect = ["tests/test_docs.py", "tests/test_core.py", "tests/test_cli.py"]
+check = "python3 -m unittest -q"
+prompt = """This is the textkit repository (read README.md for its conventions).
+
+Add `textkit/roman.py` with `to_roman(n)` and `from_roman(s)`:
+- to_roman accepts integers 1 to 3999 and returns the standard upper-case numeral (1994 -> "MCMXCIV"). Anything else (0, 4000, negative) raises ValueError.
+- from_roman accepts only canonical upper-case numerals, the exact strings to_roman produces. "IIII", "IC", "VX", "mcm", "" and anything else non-canonical raise ValueError.
+- from_roman(to_roman(n)) == n for every n from 1 to 3999.
+Add a CLI command `roman VALUE`: if VALUE is all digits print its numeral, otherwise print the integer for the numeral.
+"""
+
+[[criteria]]
+id = "c1"
+text = "to_roman and from_roman are correct and round-trip for every n in 1..3999"
+
+[[criteria]]
+id = "c2"
+text = "to_roman(0), to_roman(4000), from_roman(\"IIII\"), from_roman(\"IC\") and from_roman(\"\") raise ValueError"
+
+[[criteria]]
+id = "c3"
+text = "`python3 -m textkit roman 1994` prints MCMXCIV; `roman MCMXCIV` prints 1994; `roman IIII` exits 2 with `error:` on stderr"
+
+[[criteria]]
+id = "c4"
+text = "the README \"Commands\" table has a row for `roman`, and `python3 -m textkit commands` lists it"
+
+[[criteria]]
+id = "c5"
+text = "CHANGELOG.md has a new bullet under `## Unreleased` that names `roman` in backticks"
+
+[[criteria]]
+id = "c6"
+text = "tests/test_roman.py covers the function and the CLI command, and `python3 -m unittest` passes"

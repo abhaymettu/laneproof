@@ -1,0 +1,247 @@
+{
+ "condition": "worktree",
+ "suite": "coupled",
+ "rep": 2,
+ "model": "haiku",
+ "parallel": 4,
+ "wall_seconds": 139.6,
+ "final_commit": "de86c91500ebfeb9adf899db6f84ded9ad1118bf",
+ "lanes": [
+  {
+   "seconds": 15.2,
+   "claim": "done",
+   "usage": {
+    "turns": 6,
+    "input_tokens": 10,
+    "output_tokens": 2322,
+    "cache_read_tokens": 39670,
+    "cache_write_tokens": 5943,
+    "runs": 1,
+    "session_id": "6ed4e408-0033-4dbe-86df-0a36a579b44f",
+    "final": "The README and the registry already agreed, so no rows or help strings needed fixing. I added the check so they stay in sync.\n\n- **`tests/test_docsync.py`** (new): for every command in `COMMANDS`, it checks that the README row exists and that its \"what it does\" cell equals the `help` string exactly. It runs one subtest per command, so commands added later are covered automatically.\n- **`CHANGELOG.md`**: added a bullet under `## Unreleased` that names `test_docsync` in backticks.\n- **Verification**: `python3 -m unittest` passes (6 tests). I also changed one README cell temporarily, and the new test failed for `shout`. I then restored the README, and the suite passes again. `git status` shows only the changelog edit and the new test file.\n\nI didn't commit, as you asked.\n\nSTATUS: done"
+   },
+   "task": "docsync",
+   "claim_commit": "7fc69de6b3b99e8cdff0c6cfc1609b241de5d3aa",
+   "merged": true,
+   "conflicts": []
+  },
+  {
+   "seconds": 37.6,
+   "claim": "done",
+   "usage": {
+    "turns": 17,
+    "input_tokens": 26,
+    "output_tokens": 6301,
+    "cache_read_tokens": 154236,
+    "cache_write_tokens": 12832,
+    "runs": 2,
+    "session_id": "4d441dd7-8840-4c2b-b8dd-2b5f26806b42",
+    "final": "I merged `main` into the branch and resolved the conflict. The suite passes (17 tests, `python3 -m unittest`).\n\n- **CHANGELOG.md**: kept both bullets under `## Unreleased`: my `dur` bullet and main's `test_docsync` bullet. No conflict markers remain.\n- **README.md**: main's new `tests/test_docsync.py` requires each README command cell to equal the registered help string exactly. My `dur` row had examples the help string lacks, so that test failed. I shortened the cell to `convert seconds to a duration, or a duration to seconds`, which matches the help string.\n\nThe conflicted and changed files are staged, but I did not run `git commit`, so the merge is still open. Committing will complete it.\n\nSTATUS: done"
+   },
+   "task": "duration",
+   "claim_commit": "f2a2aacdaafdeb084b1e95810a4c378d30cab400",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md"
+    ]
+   ]
+  },
+  {
+   "seconds": 52.5,
+   "claim": "done",
+   "usage": {
+    "turns": 19,
+    "input_tokens": 26,
+    "output_tokens": 8244,
+    "cache_read_tokens": 170902,
+    "cache_write_tokens": 16471,
+    "runs": 3,
+    "session_id": "d8c4ed79-0775-4f37-b946-155fb1a0a415",
+    "final": "I merged the new main into the branch and resolved both conflicts. Each one kept both sides:\n- **`textkit/cli.py`**: the imports now include `contextlib`, `io`, `json` (from my change) and `re` (from `dur`).\n- **`CHANGELOG.md`**: the `--json` bullet and the `dur` bullet both sit under `## Unreleased`.\n\nThe merged tree has no conflict markers, and the conflicted files are staged. The merge itself is not committed, so `MERGE_HEAD` is still set, as with the last merge.\n\nChecks:\n- `python3 -m unittest` runs 22 tests, all passing.\n- `--json` still works: `shout hi` gives `\"HI\"`, and `dur 90` gives `\"1m30s\"` with exit 0.\n- Plain `dur 1h30m` still prints `5400`.\n\nSTATUS: done"
+   },
+   "task": "jsonout",
+   "claim_commit": "36aad98c087d69e66e3b2e4ceceb6680153a221f",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md"
+    ],
+    [
+     "CHANGELOG.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 77.1,
+   "claim": "done",
+   "usage": {
+    "turns": 26,
+    "input_tokens": 48,
+    "output_tokens": 11310,
+    "cache_read_tokens": 423305,
+    "cache_write_tokens": 24853,
+    "runs": 3,
+    "session_id": "e704fd5e-b764-4bbb-beaa-f06314202f82",
+    "final": "I merged main again and resolved the conflicts in `CHANGELOG.md` and `textkit/cli.py`. The merge is committed as `f73e8e9 Merge main into mdtable`.\n\nMain had added the global `--json` option and the `roman` command since the last merge. I kept both sides in each file:\n- **`textkit/cli.py`:** `csv` now sits with the stdlib imports, and the import line is `from . import core, duration, roman`, plus `from .mdtable import to_markdown` from my branch.\n- **`CHANGELOG.md`:** the `mdtable` bullet is followed by main's `--json` bullet. The `dur`, `test_docsync` and `roman` bullets are unchanged.\n\nChecks after the merge:\n- `python3 -m unittest` runs 41 tests, all passing.\n- `printf \"a,b\\n1,2\\n\" | python3 -m textkit mdtable` prints the three-line table.\n- A ragged CSV prints `error: row 2 has 1 cells, expected 2` and exits 2.\n- `printf \"a,b\\n1,2\\n\" | python3 -m textkit --json mdtable` returns one JSON object with the table lines.\n- `python3 -m textkit commands` lists `commands`, `count`, `dur`, `mdtable`, `roman` and `shout`.\n- No conflict markers remain.\n\nSTATUS: done"
+   },
+   "task": "mdtable",
+   "claim_commit": "f73e8e92ccfb2177f76c2802d6f74ebfcda07e27",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md"
+    ],
+    [
+     "CHANGELOG.md"
+    ]
+   ]
+  },
+  {
+   "seconds": 63.8,
+   "claim": "done",
+   "usage": {
+    "turns": 27,
+    "input_tokens": 36,
+    "output_tokens": 10000,
+    "cache_read_tokens": 300257,
+    "cache_write_tokens": 21551,
+    "runs": 3,
+    "session_id": "27bab5f8-09a4-404f-a4b4-c01f091c6628",
+    "final": "I merged main into `lane/near` and resolved both conflicts by keeping both sides.\n\n- **`textkit/cli.py`:** the import is now `from . import core, duration, near, roman`, and the `near` and `roman` commands both stay registered.\n- **`CHANGELOG.md`:** both bullets are under `## Unreleased`, the `near` bullet first and then the `roman` bullet.\n\nChecks on the merged tree:\n- `python3 -m unittest` runs 44 tests, all passing.\n- `near helo hello help` prints `hello`.\n- `near zzzz hello` prints `no match` to stderr and exits 1.\n- `near helo hello --max -1` prints `error: max_distance must be >= 0` and exits 2.\n- `roman 14` prints `XIV`.\n- `commands` lists `near` and `roman`.\n- The README has one row each for `near` and `roman`.\n- No conflict markers remain.\n\nThe merge is committed as `916cd51`, and `lane/near` now contains everything on main, including the `roman` merge.\n\nSTATUS: done"
+   },
+   "task": "near",
+   "claim_commit": "916cd517cf050a628c639e01c4fa5e84e3c0709f",
+   "merged": false,
+   "conflicts": [
+    [
+     "textkit/cli.py"
+    ],
+    [
+     "CHANGELOG.md",
+     "textkit/cli.py"
+    ],
+    [
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 25.3,
+   "claim": "done",
+   "usage": {
+    "turns": 11,
+    "input_tokens": 12,
+    "output_tokens": 4789,
+    "cache_read_tokens": 58733,
+    "cache_write_tokens": 10904,
+    "runs": 1,
+    "session_id": "29fc669b-2fc4-4881-9cc1-59afe153d12d",
+    "final": "`roman` is in place: `textkit/roman.py`, the CLI command, a README row, a CHANGELOG bullet, and `tests/test_roman.py`. `python3 -m unittest` runs 26 tests, all passing, including the README/registry sync tests.\n\n- **Library:** `to_roman` and `from_roman` are in `textkit/roman.py`. `from_roman` accepts only the canonical pattern and then re-checks by round-tripping through `to_roman`, so `\"\"` and any other non-canonical input raise `ValueError`.\n- **Round-trip:** I checked `from_roman(to_roman(n)) == n` for every n in 1..3999.\n- **CLI:** `roman 1994` prints `MCMXCIV`, `roman MCMXCIV` prints `1994`, and `roman IIII` prints `error: not a canonical Roman numeral: 'IIII'` to stderr and exits 2. `commands` lists `roman`.\n- **Docs:** The README row uses the help string `convert between integers and Roman numerals`, and the CHANGELOG bullet under `## Unreleased` names `roman` in backticks.\n\nI did not commit, as the task said. The one stray command I ran (a no-op `python3 -` heredoc) had no effect on the repo.\n\nSTATUS: done"
+   },
+   "task": "roman",
+   "claim_commit": "fc8672473302ac8cb6efb4f8b639ff75238ce3f0",
+   "merged": true,
+   "conflicts": []
+  },
+  {
+   "seconds": 43.0,
+   "claim": "done",
+   "usage": {
+    "turns": 21,
+    "input_tokens": 20,
+    "output_tokens": 8584,
+    "cache_read_tokens": 136893,
+    "cache_write_tokens": 19911,
+    "runs": 2,
+    "session_id": "f11b2d72-8241-46a9-bc67-3dfbaa41e9c9",
+    "final": "The merge with `main` is resolved and the tests pass (53 tests, OK). The merge is staged but not committed, since you didn't ask me to commit.\n\nConflict resolutions, keeping both sides in each file:\n- **`textkit/cli.py`:** imports now read `from . import core, duration, roman, rot as rot_mod` plus `from .mdtable import to_markdown`. Both `rot` and `roman` commands are registered, and each keeps its own `return 0`.\n- **`README.md`:** the table has the `rot` row and the `roman` row, after `dur`.\n- **`CHANGELOG.md`:** under `## Unreleased`, the `rot` bullet comes before the `roman` bullet.\n\nChecks run after resolving:\n- No conflict markers remain in `CHANGELOG.md`, `README.md`, or `textkit/`.\n- `python3 -m unittest` passes, including `test_docsync` and the README/registry sync test.\n- `python3 -m textkit rot \"Hello, World!\"` prints `Uryyb, Jbeyq!`.\n- `python3 -m textkit commands` lists `rot` alongside `roman` and `mdtable`.\n\nThe files that changed on disk during the merge (`cli.py`, `README.md`, `CHANGELOG.md`) were the `main` side I merged in, so I kept their content as the base.\n\nSTATUS: done"
+   },
+   "task": "rot",
+   "claim_commit": "e2f0ac7544984e363b736997be244dd89b2ac19b",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 54.4,
+   "claim": "done",
+   "usage": {
+    "turns": 22,
+    "input_tokens": 32,
+    "output_tokens": 8400,
+    "cache_read_tokens": 268031,
+    "cache_write_tokens": 20128,
+    "runs": 3,
+    "session_id": "eea5cf70-65a6-4c4c-9d93-1c8d3e8dd171",
+    "final": "I merged main into the slug branch again and resolved the conflict in `textkit/cli.py`. The conflict was an import line: main had changed it to `rot as rot_mod`, and my branch had added `slug`. The resolved line is `from . import core, duration, roman, rot as rot_mod, slug`. Main's `rot` command and my `slug` command are both still registered.\n\nChecks after the merge:\n- `python3 -m unittest`: 64 tests, OK.\n- `slug \"H\u00e9llo, W\u00f6rld!\"` prints `hello-world`. `slug \"a b\" --sep _` prints `a_b`. `slug \"!!!\"` exits 2 with `error:` on stderr. `--json slug \"!!!\"` gives `\"exit\": 2`.\n- `commands` lists both `slug` and `rot`. `rot hello` prints `uryyb`.\n- No conflict markers remain in `cli.py`, `README.md`, or `CHANGELOG.md`.\n\nThe merge is committed as `97261ac`, with the Co-Authored-By line, and the worktree is clean.\n\nSTATUS: done"
+   },
+   "task": "slug",
+   "claim_commit": "97261aca10ffe94bd45ef47e29734193fa18f450",
+   "merged": false,
+   "conflicts": [
+    [
+     "textkit/cli.py"
+    ],
+    [
+     "textkit/cli.py"
+    ],
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 39.5,
+   "claim": "done",
+   "usage": {
+    "turns": 17,
+    "input_tokens": 28,
+    "output_tokens": 5723,
+    "cache_read_tokens": 189133,
+    "cache_write_tokens": 15064,
+    "runs": 2,
+    "session_id": "0975496e-4433-40af-b18f-b894e46b77c3",
+    "final": "The merge of `main` into `lane/topwords` is resolved, and the suite passes (65 tests).\n\n- **Conflict:** only `textkit/cli.py`, on the import line. I kept both sides: `from . import core, duration, roman, rot as rot_mod, topwords`. The `rot` and `top` command blocks both survived the merge.\n- **Checks:** no conflict markers remain in any file. `python3 -m unittest` passes. `top \"b a b c a b\" --k 2` prints `b 3` and `a 2`. `top x --k 0` exits 2 with `error:`. `commands` lists both `rot` and `top`.\n- **Staging:** I staged `textkit/cli.py`. The merge is not committed yet, so `MERGE_HEAD` is still set. Run `git commit` in the worktree to finish it. I did not create the commit myself.\n\nSTATUS: done"
+   },
+   "task": "topwords",
+   "claim_commit": "aee9b5f907e34685a601b25397bd6e6e7c2132ca",
+   "merged": true,
+   "conflicts": [
+    [
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 60.5,
+   "claim": "done",
+   "usage": {
+    "turns": 25,
+    "input_tokens": 34,
+    "output_tokens": 9921,
+    "cache_read_tokens": 295384,
+    "cache_write_tokens": 22411,
+    "runs": 2,
+    "session_id": "9bbdf23d-69d2-40ac-8e0f-27dec6f884ea",
+    "final": "`git merge main` conflicted in `CHANGELOG.md`, `README.md`, and `textkit/cli.py`. I resolved all three by keeping both sides, and the merge is committed as `159d9ad` on `lane/wrap`.\n\n- **`textkit/cli.py`:** the import line includes `rot as rot_mod, topwords` from main and `wrap` from my branch. Both command blocks are kept: `wrap` first, then `top`.\n- **`README.md`:** the table has both the `wrap` row and the `top` row.\n- **`CHANGELOG.md`:** both bullets sit under `## Unreleased`, `wrap` before `top`.\n\nChecks on the merged tree:\n- No conflict markers remain.\n- `python3 -m unittest` runs 78 tests, all passing.\n- `wrap \"aaa bbb ccc\" --width 7` prints `aaa bbb` and `ccc`.\n- `wrap x --width 0` exits 2 with `error:` on stderr.\n- `top` and `rot` still work, and `commands` lists `wrap` and `top`.\n\nThe worktree was clean when I started, and my earlier `wrap` work was already in commit `467e058`, which I did not create myself. The merge commit message ends with the Co-Authored-By line, added by amending the unpushed merge commit.\n\nSTATUS: done"
+   },
+   "task": "wrap",
+   "claim_commit": "a8a820632e46b2013a923212d415a185f427bbe8",
+   "merged": true,
+   "conflicts": [
+    [
+     "textkit/cli.py"
+    ]
+   ]
+  }
+ ]
+}

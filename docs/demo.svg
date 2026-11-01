@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 493" role="img" aria-label="Output of laneproof demo: three lanes, two false done claims caught, all landed">
+<style>
+  .card { fill: #0d1117; } .bar { fill: #161b22; }
+  text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+  .txt { fill: #c9d1d9; } .prompt { fill: #8b949e; } .ok { fill: #3fb950; } .bad { fill: #f85149; } .warn { fill: #d29922; }
+</style>
+<rect class="card" width="940" height="493" rx="12"/>
+<rect class="bar" width="940" height="32" rx="12"/><rect class="bar" y="20" width="940" height="12"/>
+<circle cx="22" cy="16" r="6" fill="#f85149"/><circle cx="42" cy="16" r="6" fill="#d29922"/><circle cx="62" cy="16" r="6" fill="#3fb950"/>
+<text x="24" y="62" class="prompt" xml:space="preserve">$ laneproof demo</text>
+<text x="24" y="81" class="txt" xml:space="preserve">demo repo: a throwaway git repo</text>
+<text x="24" y="100" class="txt" xml:space="preserve">3 lanes, cap 2, scripted agents (no model calls)</text>
+<text x="24" y="119" class="txt" xml:space="preserve"></text>
+<text x="24" y="138" class="txt" xml:space="preserve">  start   rename-R001                  reservation R001</text>
+<text x="24" y="157" class="txt" xml:space="preserve">  start   double-R002                  reservation R002</text>
+<text x="24" y="176" class="warn" xml:space="preserve">  queued  docs                         cap 2 full (2 reserved, 0 unreserved live)</text>
+<text x="24" y="195" class="ok" xml:space="preserve">  landed  rename-R001                  b0473da8fa (2 checks re-run on merged main)</text>
+<text x="24" y="214" class="txt" xml:space="preserve">  start   docs-R003                    reservation R003</text>
+<text x="24" y="233" class="bad" xml:space="preserve">  reject  double-R002                  your FACT `python3 -m unittest -q tests.test_double` gave exit 1 …</text>
+<text x="24" y="252" class="warn" xml:space="preserve">  retry   double-R002                  attempt 2 with the gate&#x27;s feedback</text>
+<text x="24" y="271" class="bad" xml:space="preserve">  reject  docs-R003                    criterion c1 (DOCS.md names the public function) has no FACT clai…</text>
+<text x="24" y="290" class="warn" xml:space="preserve">  retry   docs-R003                    attempt 2 with the gate&#x27;s feedback</text>
+<text x="24" y="309" class="ok" xml:space="preserve">  landed  double-R002                  b0d5ff5e25 (2 checks re-run on merged main)</text>
+<text x="24" y="328" class="ok" xml:space="preserve">  landed  docs-R003                    f7596cbfed (1 checks re-run on merged main)</text>
+<text x="24" y="347" class="txt" xml:space="preserve"></text>
+<text x="24" y="366" class="txt" xml:space="preserve">replaying the first lane&#x27;s start (a crashed coordinator restarting, say):</text>
+<text x="24" y="385" class="bad" xml:space="preserve">  refused: R001 already started an agent; one reservation, one start</text>
+<text x="24" y="404" class="txt" xml:space="preserve"></text>
+<text x="24" y="423" class="txt" xml:space="preserve">result</text>
+<text x="24" y="442" class="txt" xml:space="preserve">  rename   landed  attempts 1  false &#x27;done&#x27; claims caught 0</text>
+<text x="24" y="461" class="txt" xml:space="preserve">  double   landed  attempts 2  false &#x27;done&#x27; claims caught 1</text>
+<text x="24" y="480" class="txt" xml:space="preserve">  docs     landed  attempts 2  false &#x27;done&#x27; claims caught 1</text>
+</svg>

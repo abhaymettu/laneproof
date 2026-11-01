@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="laneproof: tasks pass admission, run in isolated worktrees, write receipts, and land on main only after the gate re-runs their evidence on the merged tree">
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1.2; }
+    .gate { fill: #fff8e6; stroke: #d4a72c; stroke-width: 1.4; }
+    .main { fill: #eaf6ee; stroke: #2da44e; stroke-width: 1.4; }
+    .t { fill: #1f2328; font-size: 14px; font-weight: 600; }
+    .s { fill: #59636e; font-size: 12px; }
+    .m { fill: #59636e; font-size: 11.5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .line { stroke: #8c959f; stroke-width: 1.4; fill: none; }
+    .back { stroke: #cf222e; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .red { fill: #cf222e; font-size: 12px; }
+    .green { fill: #1a7f37; font-size: 12px; }
+    .head { fill: #8c959f; }
+    .headr { fill: #cf222e; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0d1117; }
+      .box { fill: #161b22; stroke: #30363d; }
+      .gate { fill: #2b2111; stroke: #9e6a03; }
+      .main { fill: #0f2a19; stroke: #238636; }
+      .t { fill: #e6edf3; }
+      .s, .m { fill: #9198a1; }
+      .line { stroke: #6e7681; }
+      .head { fill: #6e7681; }
+      .back { stroke: #f85149; }
+      .headr, .red { fill: #f85149; }
+      .green { fill: #3fb950; }
+    }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="head"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="headr"/></marker>
+  </defs>
+  <rect class="bg" width="960" height="400" rx="12"/>
+
+  <rect class="box" x="20" y="132" width="128" height="96" rx="10"/>
+  <text class="t" x="36" y="160">tasks</text>
+  <text class="m" x="36" y="182">slug.toml</text>
+  <text class="m" x="36" y="198">roman.toml</text>
+  <text class="m" x="36" y="214">criteria c1..cN</text>
+
+  <rect class="box" x="176" y="122" width="168" height="116" rx="10"/>
+  <text class="t" x="192" y="150">1 · admission</text>
+  <text class="s" x="192" y="172">cap, disk, load, quota</text>
+  <text class="s" x="192" y="190">one reservation,</text>
+  <text class="s" x="192" y="206">claimed exactly once</text>
+  <text class="s" x="192" y="224">unreadable → refuse</text>
+  <path class="line" d="M148 180 H172" marker-end="url(#a)"/>
+
+  <rect class="box" x="376" y="40" width="200" height="72" rx="10"/>
+  <text class="t" x="392" y="66">lane · own worktree</text>
+  <text class="s" x="392" y="86">agent works, then writes</text>
+  <text class="m" x="392" y="102">a receipt</text>
+  <rect class="box" x="376" y="144" width="200" height="72" rx="10"/>
+  <text class="t" x="392" y="170">lane · own worktree</text>
+  <text class="s" x="392" y="190">claude -p, codex, aider…</text>
+  <text class="m" x="392" y="206">FACT · CLAIM · HYPOTHESIS</text>
+  <rect class="box" x="376" y="248" width="200" height="72" rx="10"/>
+  <text class="t" x="392" y="274">lane · own worktree</text>
+  <text class="s" x="392" y="294">only FACTs count:</text>
+  <text class="m" x="392" y="310">a command + its result</text>
+  <path class="line" d="M344 160 C360 160 360 76 372 76" marker-end="url(#a)"/>
+  <path class="line" d="M344 180 H372" marker-end="url(#a)"/>
+  <path class="line" d="M344 200 C360 200 360 284 372 284" marker-end="url(#a)"/>
+
+  <rect class="gate" x="610" y="100" width="194" height="160" rx="10"/>
+  <text class="t" x="626" y="128">2 · evidence gate</text>
+  <text class="s" x="626" y="152">every criterion has a FACT</text>
+  <text class="s" x="626" y="170">diff stays in scope</text>
+  <text class="s" x="626" y="188">merge onto latest main</text>
+  <text class="s" x="626" y="206">re-run every FACT and</text>
+  <text class="s" x="626" y="222">the coordinator's check</text>
+  <text class="s" x="626" y="246">one lane at a time</text>
+  <path class="line" d="M576 76 C594 76 594 150 606 150" marker-end="url(#a)"/>
+  <path class="line" d="M576 180 H606" marker-end="url(#a)"/>
+  <path class="line" d="M576 284 C594 284 594 210 606 210" marker-end="url(#a)"/>
+
+  <rect class="main" x="840" y="136" width="100" height="88" rx="10"/>
+  <text class="t" x="856" y="164">3 · main</text>
+  <text class="s" x="856" y="186">atomic,</text>
+  <text class="s" x="856" y="204">lands once</text>
+  <path class="line" d="M804 180 H836" marker-end="url(#a)"/>
+  <text class="green" x="806" y="170">pass</text>
+
+  <path class="back" d="M707 260 V352 H476 V324" marker-end="url(#r)"/>
+  <text class="red" x="476" y="378">fail: the failing command and its output go back to the lane (up to 2 retries)</text>
+</svg>

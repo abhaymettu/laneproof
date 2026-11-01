@@ -1,0 +1,37 @@
+id = "rot"
+title = "rotation cipher"
+scope = ["textkit/*", "tests/*", "README.md", "CHANGELOG.md"]
+protect = ["tests/test_docs.py", "tests/test_core.py", "tests/test_cli.py"]
+check = "python3 -m unittest -q"
+prompt = """This is the textkit repository (read README.md for its conventions).
+
+Add `textkit/rot.py` with `rot(text, n)`:
+- Shift every ASCII letter by n places in the alphabet, wrapping around, keeping its case. n may be any integer, including negative and larger than 26.
+- Every other character is unchanged.
+- n that is not an int (for example a float or a string) raises ValueError. bool is not accepted either.
+Add a CLI command `rot TEXT [--n N]` (default 13).
+"""
+
+[[criteria]]
+id = "c1"
+text = "rot shifts letters with wrap-around, keeps case, leaves other characters, handles negative and large n"
+
+[[criteria]]
+id = "c2"
+text = "rot raises ValueError for a non-int n, including floats, strings and bools"
+
+[[criteria]]
+id = "c3"
+text = "`python3 -m textkit rot \"Hello, World!\"` prints Uryyb, Jbeyq!; `rot abc --n -1` prints zab; `rot abc --n 1.5` exits 2 with `error:` on stderr"
+
+[[criteria]]
+id = "c4"
+text = "the README \"Commands\" table has a row for `rot`, and `python3 -m textkit commands` lists it"
+
+[[criteria]]
+id = "c5"
+text = "CHANGELOG.md has a new bullet under `## Unreleased` that names `rot` in backticks"
+
+[[criteria]]
+id = "c6"
+text = "tests/test_rot.py covers the function and the CLI command, and `python3 -m unittest` passes"

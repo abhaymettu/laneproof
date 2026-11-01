@@ -1,0 +1,1165 @@
+{
+ "condition": "gated",
+ "suite": "coupled",
+ "rep": 1,
+ "model": "sonnet",
+ "parallel": 4,
+ "wall_seconds": 243.3,
+ "final_commit": "5027030fd7a6065d7018407e142c9768ef5ad905",
+ "lanes": [
+  {
+   "task": "docsync",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 17.6,
+   "attempts": 1,
+   "verdicts": [
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "425b026f7873c0c82c8803059948b5a35229148b",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_docsync",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_docsync.DocSyncTest.test_readme_matches_help",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q 'test_docsync' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 3,
+    "input_tokens": 6,
+    "output_tokens": 1182,
+    "cache_read_tokens": 18565,
+    "cache_write_tokens": 4372,
+    "runs": 1,
+    "session_id": "6953a899-ce9c-45d4-8f31-1189b40694c0",
+    "final": "I added `tests/test_docsync.py` and a `test_docsync` bullet under `## Unreleased` in `CHANGELOG.md`. `python3 -m unittest` passes (7 tests).\n\nThe README table and the `help` strings in `textkit/cli.py` already matched for all three commands (`commands`, `count`, `shout`), so I didn't change any row or help string.\n\nI didn't run a check that the new test fails on a mismatch (c1). I also didn't re-run the other criteria separately, but the full suite passes.\n\nThe test compares each registered command's README cell to its `help` string exactly. It loops over `COMMANDS`, so it will also cover commands added later. I also added a second test that fails if the README has a row for a command that isn't registered.\n\nI wrote `.laneproof-receipt.json` with a FACT command for each of c1\u2013c4."
+   },
+   "claim_commit": "425b026f7873c0c82c8803059948b5a35229148b"
+  },
+  {
+   "task": "jsonout",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 26.1,
+   "attempts": 1,
+   "verdicts": [
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "25edf7461d9dd009d0414cd8c50f861c89a049d1",
+     "replays": [
+      {
+       "cmd": "python3 -m textkit --json shout hi",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_json.JsonTest.test_every_command",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_json.JsonTest.test_error",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q -- '--json' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '`--json`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 2307,
+    "cache_read_tokens": 27432,
+    "cache_write_tokens": 5775,
+    "runs": 1,
+    "session_id": "889e7928-cbc4-48ac-8f4e-274540889820",
+    "final": "`python3 -m textkit --json <command> [args...]` now prints the JSON object for the command you run. `python3 -m unittest` passes (9 tests), and `python3 -m textkit --json shout hi` prints `{\"command\": \"shout\", \"exit\": 0, \"output\": [\"HI\"]}`.\n\n- **Where it lives:** the option is handled once in `main()` in `textkit/cli.py`. It captures the command's stdout and prints the JSON object, so no command changed. Commands added later get it automatically.\n- **Errors:** a `ValueError` still prints `error: <message>` to stderr and exits 2. Stdout then gets the JSON object with `\"exit\": 2`.\n- **Without `--json`:** behaviour is unchanged.\n- **Docs:** `README.md` documents `--json` in its Conventions section, and `CHANGELOG.md` has a new bullet under `## Unreleased` naming `` `--json` ``.\n- **Tests:** `tests/test_json.py` covers the `shout` case, every registered command, the error case and the plain output. The error test swaps `shout`'s run function for one that raises `ValueError`, because no existing command raises one.\n\nI wrote `.laneproof-receipt.json` with a FACT command for each of c1\u2013c6. I ran the full test suite and the `shout` example directly, but did not run the individual receipt commands (the grep checks and the single-test runs)."
+   },
+   "claim_commit": "25edf7461d9dd009d0414cd8c50f861c89a049d1"
+  },
+  {
+   "task": "near",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 35.2,
+   "attempts": 1,
+   "verdicts": [
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "35413f4dfddd42609dc866c04479a7759c544c77",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_near.NearTest.test_levenshtein tests.test_near.NearTest.test_closest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_near.NearTest.test_negative",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit near helo hello help",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit near zzzz hello",
+       "ok": true,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m textkit near helo hello --max -1",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `near` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '`near`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 2677,
+    "cache_read_tokens": 28811,
+    "cache_write_tokens": 6810,
+    "runs": 1,
+    "session_id": "03dfa6fd-ec25-4949-963a-0cbede29c2f7",
+    "final": "`textkit/near.py` is in with `levenshtein` and `closest`, and `near WORD CANDIDATE... [--max N]` works from the CLI. `python3 -m unittest` passes (13 tests), and `python3 -m textkit near helo hello help` prints `hello`.\n\nI ran the unit tests and the `near helo hello help` and `commands` calls directly. I did not run the `near zzzz hello` or `--max -1` commands by hand. Their exit codes and stderr output are covered by `tests/test_near.py`, which passes.\n\n- **CLI:** `near` is registered in `textkit/cli.py`. When nothing matches it prints `no match` to stderr and exits 1. A negative `--max` raises `ValueError` in `closest`, so the existing handler prints `error: ...` and exits 2.\n- **Docs:** I added the `near` row to the README Commands table. Its text matches the command's help string, which `tests/test_docsync.py` checks. I also added a bullet naming `near` under `## Unreleased` in `CHANGELOG.md`.\n- **Tests:** `tests/test_near.py` covers the functions and the CLI command.\n\nI wrote `.laneproof-receipt.json` with a FACT command for each criterion c1\u2013c6."
+   },
+   "claim_commit": "35413f4dfddd42609dc866c04479a7759c544c77"
+  },
+  {
+   "task": "duration",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 109.6,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `python3 -m unittest` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n......F....\n======================================================================\nFAIL: test_readme_matches_help (tests.test_docsync.DocSyncTest.test_readme_matches_help) (command='dur')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-duration-R002-wm1ex4kv/tests/test_docsync.py\", line 26, in test_readme_matches_help\n    self.assertEqual(cells[name], c[\"help\"])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'convert between seconds and durations like `1h30m`' != 'convert between seconds and durations like 1h30m'\n- convert between seconds and durations like `1h30m`\n?                                            -     -\n+ convert between seconds and durations like 1h30m\n\n\n----------------------------------------------------------------------\nRan 11 tests in 0.002s\n\nFAILED (failures=1)\n",
+      "coordinator check `python3 -m unittest -q` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n======================================================================\nFAIL: test_readme_matches_help (tests.test_docsync.DocSyncTest.test_readme_matches_help) (command='dur')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-duration-R002-wm1ex4kv/tests/test_docsync.py\", line 26, in test_readme_matches_help\n    self.assertEqual(cells[name], c[\"help\"])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'convert between seconds and durations like `1h30m`' != 'convert between seconds and durations like 1h30m'\n- convert between seconds and durations like `1h30m`\n?                                            -     -\n+ convert between seconds and durations like 1h30m\n\n\n----------------------------------------------------------------------\nRan 11 tests in 0.157s\n\nFAILED (failures=1)\n"
+     ],
+     "commit": "e3ba3dc9c6c4dd069122208e8e8e93e3226bc1ad",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_duration",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_duration.DurationTest.test_parse_invalid tests.test_duration.DurationTest.test_format",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 1h30m",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 5400",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 30m1h",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_docs",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '`dur`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": false,
+       "exit": 1
+      }
+     ]
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `python3 -m unittest` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n...............F.....\n======================================================================\nFAIL: test_match (tests.test_near.NearCliTest.test_match)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-duration-R002-ypp5lwzh/tests/test_near.py\", line 27, in test_match\n    self.assertEqual(run(\"near\", \"helo\", \"hello\", \"help\"), (0, \"hello\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'hello\\n', '') != (0, 'hello\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'hello\\n', '')\n?  ^^^^\n\n+ (0, 'hello\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 21 tests in 0.272s\n\nFAILED (failures=1)\n",
+      "coordinator check `python3 -m unittest -q` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n======================================================================\nFAIL: test_match (tests.test_near.NearCliTest.test_match)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-duration-R002-ypp5lwzh/tests/test_near.py\", line 27, in test_match\n    self.assertEqual(run(\"near\", \"helo\", \"hello\", \"help\"), (0, \"hello\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'hello\\n', '') != (0, 'hello\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'hello\\n', '')\n?  ^^^^\n\n+ (0, 'hello\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 21 tests in 0.370s\n\nFAILED (failures=1)\n"
+     ],
+     "commit": "8915198b1759cf44bd2287059a13659d21026c90",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_duration",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_duration.DurationTest.test_parse_invalid tests.test_duration.DurationTest.test_format",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 1h30m",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 5400",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 30m1h",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_docs",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '`dur`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": false,
+       "exit": 1
+      }
+     ]
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "086521f1e7f8975c04709231df200ebfd7c92943",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_duration",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_duration.DurationTest.test_parse_invalid tests.test_duration.DurationTest.test_format",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 1h30m",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 5400",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 30m1h",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_docs",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '`dur`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 14,
+    "input_tokens": 32,
+    "output_tokens": 4621,
+    "cache_read_tokens": 167345,
+    "cache_write_tokens": 12644,
+    "runs": 3,
+    "session_id": "2c7a3876-996f-4fce-a589-f69fc1be1df1",
+    "final": "Wrapping up: I merged `main` and resolved the `textkit/cli.py` conflict by hand. Both `dur` and `near` are kept, and I restored the `return 0` in `dur` and `near` that the earlier union merge had dropped. That missing return caused the `None` vs `0` failure in `test_near`.\n\nThe full suite passes on the merged tree (21 tests). `dur 30m1h` exits 2, and `commands` lists `dur` and `near`. `CHANGELOG.md` and the README have both sides' entries. The receipt is rewritten with status `done`. I haven't re-run the gate itself."
+   },
+   "claim_commit": "086521f1e7f8975c04709231df200ebfd7c92943"
+  },
+  {
+   "task": "rot",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 62.2,
+   "attempts": 1,
+   "verdicts": [
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "cba66a63c22d3b7b849175478280295054113b57",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_rot.RotTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_rot.RotTest.test_invalid_n",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit rot \"Hello, World!\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_rot.RotCliTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `rot` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F 'Added `rot`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 8,
+    "input_tokens": 14,
+    "output_tokens": 3427,
+    "cache_read_tokens": 65127,
+    "cache_write_tokens": 8275,
+    "runs": 1,
+    "session_id": "0043f5aa-e89d-4420-a1e0-0abb71fc75fc",
+    "final": "`rot(text, n)` is in `textkit/rot.py`, and `python3 -m textkit rot TEXT [--n N]` works with a default of 13. The full suite passes (25 tests). I ran `python3 -m textkit rot abc --n 1.5` by hand: it printed `error:` and exited 2. The other CLI cases (`Uryyb, Jbeyq!`, `zab`) are checked by `tests/test_rot.py`, not run by hand.\n\n- **Function:** a non-int `n` (float, string, bool) raises `ValueError`.\n- **CLI:** `--n` converts to an int when it can and otherwise passes the raw string through. That way `1.5` reaches `rot()` and fails the same way as a library call.\n- **Docs:** I added the README \"Commands\" table row and the `## Unreleased` bullet in `CHANGELOG.md`, which names `rot` in backticks.\n- **Existing test changed:** `tests/test_json.py::test_every_command` supplied one `\"x\"` for every registered argument, including optional flags like `--n`, so it broke when `rot` was added. It now skips flag arguments. I changed it because the only alternative was making `n` positional, which the spec rules out.\n- **Receipt:** `.laneproof-receipt.json` is written with FACT claims for c1\u2013c6. I didn't re-run the claim commands after the `test_json.py` fix."
+   },
+   "claim_commit": "cba66a63c22d3b7b849175478280295054113b57"
+  },
+  {
+   "task": "roman",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 123.2,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `python3 -m unittest` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n...........F..........\n======================================================================\nFAIL: test_match (tests.test_near.NearCliTest.test_match)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-roman-R006-69c4jmr5/tests/test_near.py\", line 27, in test_match\n    self.assertEqual(run(\"near\", \"helo\", \"hello\", \"help\"), (0, \"hello\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'hello\\n', '') != (0, 'hello\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'hello\\n', '')\n?  ^^^^\n\n+ (0, 'hello\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 22 tests in 0.167s\n\nFAILED (failures=1)\n",
+      "coordinator check `python3 -m unittest -q` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n======================================================================\nFAIL: test_match (tests.test_near.NearCliTest.test_match)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-roman-R006-69c4jmr5/tests/test_near.py\", line 27, in test_match\n    self.assertEqual(run(\"near\", \"helo\", \"hello\", \"help\"), (0, \"hello\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'hello\\n', '') != (0, 'hello\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'hello\\n', '')\n?  ^^^^\n\n+ (0, 'hello\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 22 tests in 0.078s\n\nFAILED (failures=1)\n"
+     ],
+     "commit": "cb355586f673a2151825551148884969e5375a9f",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_round_trip tests.test_roman.RomanTest.test_known",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_to_roman_invalid tests.test_roman.RomanTest.test_from_roman_invalid",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit roman 1994",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit roman MCMXCIV",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_cli",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `roman` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '`roman`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": false,
+       "exit": 1
+      }
+     ]
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `python3 -m unittest` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n.......F..................\n======================================================================\nFAIL: test_cli (tests.test_duration.DurationTest.test_cli)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-roman-R006-64n3_l02/tests/test_duration.py\", line 32, in test_cli\n    self.assertEqual(self.run_cli(\"dur\", \"1h30m\"), (0, \"5400\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, '5400\\n', '') != (0, '5400\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, '5400\\n', '')\n?  ^^^^\n\n+ (0, '5400\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 26 tests in 0.434s\n\nFAILED (failures=1)\n",
+      "coordinator check `python3 -m unittest -q` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n======================================================================\nFAIL: test_cli (tests.test_duration.DurationTest.test_cli)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-roman-R006-64n3_l02/tests/test_duration.py\", line 32, in test_cli\n    self.assertEqual(self.run_cli(\"dur\", \"1h30m\"), (0, \"5400\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, '5400\\n', '') != (0, '5400\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, '5400\\n', '')\n?  ^^^^\n\n+ (0, '5400\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 26 tests in 0.151s\n\nFAILED (failures=1)\n"
+     ],
+     "commit": "6b7e84270fa75377bad81d4474d883b026dc8e75",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_round_trip tests.test_roman.RomanTest.test_known",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_to_roman_invalid tests.test_roman.RomanTest.test_from_roman_invalid",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit roman 1994",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit roman MCMXCIV",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_cli",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `roman` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '`roman`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": false,
+       "exit": 1
+      }
+     ]
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "16d84cbbd4547e8a34cca0349dc7a0159a18ea3d",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_round_trip tests.test_roman.RomanTest.test_known",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_to_roman_invalid tests.test_roman.RomanTest.test_from_roman_invalid",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit roman 1994",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit roman MCMXCIV",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_cli",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `roman` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '`roman`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 13,
+    "input_tokens": 30,
+    "output_tokens": 5111,
+    "cache_read_tokens": 167639,
+    "cache_write_tokens": 14259,
+    "runs": 3,
+    "session_id": "3ff10563-0adb-46cf-80a7-951cb0533fa1",
+    "final": "I merged `main` again and resolved the conflicts in `README.md` and `textkit/cli.py`. `python3 -m unittest` now passes with all 34 tests, and `python3 -m textkit commands` lists `roman` alongside `dur`, `near` and `rot`.\n\n- **`textkit/cli.py`:** `main` had two competing `from . import core, ...` lines. I started from `main`'s version, merged them into `from . import core, duration, near, roman, rot`, and added the `roman` command with its own `return 0`.\n- **`README.md`:** the table now has rows for `near`, `roman`, `rot`, `shout` and `dur`. The `dur` row sits after `shout`, where `main` put it, so the table is no longer alphabetical.\n- **`CHANGELOG.md`:** it merged without conflicts and still has the `roman` bullet.\n\nThe `test_duration` failure came from the earlier conflict resolution, not from `main`. That resolution had dropped `dur`'s `return 0`. Taking `main`'s `cli.py` as the base fixes it.\n\nThe merge is committed. I left `.laneproof-receipt.json` unchanged, since its FACT commands still apply to the merged tree."
+   },
+   "claim_commit": "16d84cbbd4547e8a34cca0349dc7a0159a18ea3d"
+  },
+  {
+   "task": "topwords",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 40.5,
+   "attempts": 1,
+   "verdicts": [
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "efa4889f7db56cef7bfc1396b3c5a94ee9340e04",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_topwords.TopWordsTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_topwords.TopWordsTest.test_invalid_k",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit top \"b a b c a b\" --k 2",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit top x --k 0",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `top` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F 'Added `top`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 3,
+    "input_tokens": 6,
+    "output_tokens": 2220,
+    "cache_read_tokens": 20576,
+    "cache_write_tokens": 6808,
+    "runs": 1,
+    "session_id": "56626971-a5b5-41ac-9a4f-6044175f025f",
+    "final": "`top_words(text, k)` and the `top TEXT [--k N]` command are in. The full suite passes (36 tests), and I wrote `.laneproof-receipt.json` with a FACT command for each criterion c1\u2013c6. I didn't run those receipt commands separately; only `python3 -m unittest` ran.\n\n- **Function:** `textkit/topwords.py` lower-cases the text, treats runs of a-z as words, and sorts by count then alphabetically. It raises `ValueError` for k < 1. It also raises it for a non-integer k, which you didn't ask for.\n- **CLI:** `top` is registered in `textkit/cli.py` with `--k` defaulting to 3. It prints one `word count` line per result. A bad k gives `error:` on stderr and exit 2.\n- **Docs:** I added the `top` row to the README table and a CHANGELOG bullet naming `top` under `## Unreleased`. The README description matches the command's help string, which `test_docsync` checks.\n- **Tests:** `tests/test_topwords.py` covers the function and the CLI command.\n\nI didn't commit anything, per the lane instructions."
+   },
+   "claim_commit": "efa4889f7db56cef7bfc1396b3c5a94ee9340e04"
+  },
+  {
+   "task": "wrap",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 58.1,
+   "attempts": 2,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "no receipt: write .laneproof-receipt.json at the root of your worktree"
+     ],
+     "commit": "efa4889f7db56cef7bfc1396b3c5a94ee9340e04",
+     "replays": []
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "60f92050976a747d922d2306c8caf6dd8ef4f850",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_wrap.WrapTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_wrap.WrapTest.test_bad_width",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit wrap \"aaa bbb ccc\" --width 7",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit wrap x --width 0",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `wrap` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '`wrap`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 4,
+    "input_tokens": 10,
+    "output_tokens": 2642,
+    "cache_read_tokens": 45297,
+    "cache_write_tokens": 4396,
+    "runs": 1,
+    "session_id": "a70d0df1-6b29-483a-a68e-2b5c0bf327cc",
+    "final": "`wrap` is in place and `.laneproof-receipt.json` is written with status `done`. The gate hasn't re-run it, so nothing has landed yet.\n\nThe first attempt left no changes in the worktree, so I redid all of it. Everything below was run in the worktree, before the gate's merge with the latest main:\n\n- **Function:** `textkit/wrap.py` has `wrap(text, width)`. It raises `ValueError` when `width` is below 1.\n- **CLI:** `wrap TEXT [--width N]` is registered in `textkit/cli.py` with a default width of 40.\n- **c3:** `python3 -m textkit wrap \"aaa bbb ccc\" --width 7` prints `aaa bbb` and `ccc`. `wrap x --width 0` prints `error: width must be at least 1` and exits 2.\n- **Docs:** `python3 -m textkit commands` lists `wrap`. README.md has a `wrap` row in the Commands table. CHANGELOG.md has a new bullet under `## Unreleased` that names `wrap` in backticks.\n- **Tests:** `tests/test_wrap.py` covers the function and the CLI. `python3 -m unittest` runs 47 tests and all pass.\n\nThe receipt has FACT claims for c1 through c6, each with a command the gate can re-run.\n\n`textkit/cli.py` already had three overlapping `from . import ...` lines, probably left over from earlier merges. I only added `wrap` to the last one and left the others alone."
+   },
+   "claim_commit": "60f92050976a747d922d2306c8caf6dd8ef4f850"
+  },
+  {
+   "task": "slug",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 107.1,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `python3 -m unittest` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n............................................F....\n======================================================================\nFAIL: test_top (tests.test_topwords.TopCliTest.test_top)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-slug-R008-qixfy1y6/tests/test_topwords.py\", line 34, in test_top\n    self.assertEqual(run(\"top\", \"b a b c a b\", \"--k\", \"2\"), (0, \"b 3\\na 2\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'b 3\\na 2\\n', '') != (0, 'b 3\\na 2\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'b 3\\na 2\\n', '')\n?  ^^^^\n\n+ (0, 'b 3\\na 2\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 49 tests in 0.366s\n\nFAILED (failures=1)\n",
+      "coordinator check `python3 -m unittest -q` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n======================================================================\nFAIL: test_top (tests.test_topwords.TopCliTest.test_top)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-slug-R008-qixfy1y6/tests/test_topwords.py\", line 34, in test_top\n    self.assertEqual(run(\"top\", \"b a b c a b\", \"--k\", \"2\"), (0, \"b 3\\na 2\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'b 3\\na 2\\n', '') != (0, 'b 3\\na 2\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'b 3\\na 2\\n', '')\n?  ^^^^\n\n+ (0, 'b 3\\na 2\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 49 tests in 0.319s\n\nFAILED (failures=1)\n"
+     ],
+     "commit": "c73b13dda890d7b136e162d26e026d44b63e17dd",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_slug.SlugifyTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -c \"from textkit.slug import slugify\nimport sys\ntry: slugify('!!!')\nexcept ValueError: sys.exit(0)\nsys.exit(1)\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"H\u00e9llo, W\u00f6rld!\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"!!!\"",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `slug` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F 'Added `slug`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": false,
+       "exit": 1
+      }
+     ]
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `python3 -m unittest` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n............................................F....\n======================================================================\nFAIL: test_top (tests.test_topwords.TopCliTest.test_top)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-slug-R008-ct0wwjd8/tests/test_topwords.py\", line 34, in test_top\n    self.assertEqual(run(\"top\", \"b a b c a b\", \"--k\", \"2\"), (0, \"b 3\\na 2\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'b 3\\na 2\\n', '') != (0, 'b 3\\na 2\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'b 3\\na 2\\n', '')\n?  ^^^^\n\n+ (0, 'b 3\\na 2\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 49 tests in 0.126s\n\nFAILED (failures=1)\n",
+      "coordinator check `python3 -m unittest -q` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n======================================================================\nFAIL: test_top (tests.test_topwords.TopCliTest.test_top)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-slug-R008-ct0wwjd8/tests/test_topwords.py\", line 34, in test_top\n    self.assertEqual(run(\"top\", \"b a b c a b\", \"--k\", \"2\"), (0, \"b 3\\na 2\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'b 3\\na 2\\n', '') != (0, 'b 3\\na 2\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'b 3\\na 2\\n', '')\n?  ^^^^\n\n+ (0, 'b 3\\na 2\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 49 tests in 0.321s\n\nFAILED (failures=1)\n"
+     ],
+     "commit": "c73b13dda890d7b136e162d26e026d44b63e17dd",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_slug.SlugifyTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -c \"from textkit.slug import slugify\nimport sys\ntry: slugify('!!!')\nexcept ValueError: sys.exit(0)\nsys.exit(1)\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"H\u00e9llo, W\u00f6rld!\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"!!!\"",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `slug` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F 'Added `slug`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": false,
+       "exit": 1
+      }
+     ]
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "5027030fd7a6065d7018407e142c9768ef5ad905",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_slug.SlugifyTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -c \"from textkit.slug import slugify\nimport sys\ntry: slugify('!!!')\nexcept ValueError: sys.exit(0)\nsys.exit(1)\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"H\u00e9llo, W\u00f6rld!\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"!!!\"",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `slug` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F 'Added `slug`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 13,
+    "input_tokens": 26,
+    "output_tokens": 5219,
+    "cache_read_tokens": 168005,
+    "cache_write_tokens": 14655,
+    "runs": 2,
+    "session_id": "ea89bf6e-8aa8-4231-ba48-14ed177a2e44",
+    "final": "I merged `main` into this branch and fixed the conflicts, and `python3 -m unittest` now passes (49 tests). I haven't re-run the gate itself.\n\n- **Conflicts:** `CHANGELOG.md`, `README.md` and `textkit/cli.py` conflicted with `main`'s new `top` command. I kept both sides: the `slug` and `top` rows and bullets, and both command functions. I also collapsed the stacked `from . import ...` lines in `cli.py` into one.\n- **`test_top` failure:** this came from the earlier bad merge on `main`, where `top` had lost its `return 0`, so it returned `None`. The merged `cli.py` has `return 0` in `_top` again, and that test passes.\n- **Receipt:** `.laneproof-receipt.json` is rewritten with status `done` and the same FACT commands. It is valid JSON.\n\nThe merge commit is made and the worktree is clean. The receipt file is git-ignored, so it won't show in `git status`."
+   },
+   "claim_commit": "5027030fd7a6065d7018407e142c9768ef5ad905"
+  },
+  {
+   "task": "mdtable",
+   "claim": "failed",
+   "state": "failed",
+   "seconds": 239.8,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `grep -A3 '## Unreleased' CHANGELOG.md | grep '`mdtable`'` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n"
+     ],
+     "commit": "889b2a4d81a3429f3914f84e2b1cb2c1f1c8cae0",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.ToMarkdownTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.ToMarkdownTest.test_errors",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.CliTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -A3 '## Unreleased' CHANGELOG.md | grep '`mdtable`'",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `python3 -m unittest` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n.........................................F....\n======================================================================\nFAIL: test_top (tests.test_topwords.TopCliTest.test_top)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-mdtable-R004-goovwnyj/tests/test_topwords.py\", line 34, in test_top\n    self.assertEqual(run(\"top\", \"b a b c a b\", \"--k\", \"2\"), (0, \"b 3\\na 2\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'b 3\\na 2\\n', '') != (0, 'b 3\\na 2\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'b 3\\na 2\\n', '')\n?  ^^^^\n\n+ (0, 'b 3\\na 2\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 46 tests in 0.244s\n\nFAILED (failures=1)\n",
+      "coordinator check `python3 -m unittest -q` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n======================================================================\nFAIL: test_top (tests.test_topwords.TopCliTest.test_top)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-mdtable-R004-goovwnyj/tests/test_topwords.py\", line 34, in test_top\n    self.assertEqual(run(\"top\", \"b a b c a b\", \"--k\", \"2\"), (0, \"b 3\\na 2\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'b 3\\na 2\\n', '') != (0, 'b 3\\na 2\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'b 3\\na 2\\n', '')\n?  ^^^^\n\n+ (0, 'b 3\\na 2\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 46 tests in 0.133s\n\nFAILED (failures=1)\n"
+     ],
+     "commit": "f5671838723da2ee4cbc4902e36b523579a4e2b0",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.ToMarkdownTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.ToMarkdownTest.test_errors",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.CliTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -A8 '## Unreleased' CHANGELOG.md | grep '`mdtable`'",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": false,
+       "exit": 1
+      }
+     ]
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks. (A union merge was tried; the checks below failed on it, so resolve by hand.)",
+      "your FACT `python3 -m unittest` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n.......................................................F....\n======================================================================\nFAIL: test_ok (tests.test_wrap.WrapCliTest.test_ok)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-mdtable-R004-y7u3k83n/tests/test_wrap.py\", line 34, in test_ok\n    self.assertEqual(self.run_cli(\"wrap\", \"aaa bbb ccc\", \"--width\", \"7\"), (0, \"aaa bbb\\nccc\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'aaa bbb\\nccc\\n', '') != (0, 'aaa bbb\\nccc\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'aaa bbb\\nccc\\n', '')\n?  ^^^^\n\n+ (0, 'aaa bbb\\nccc\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 60 tests in 0.333s\n\nFAILED (failures=1)\n",
+      "coordinator check `python3 -m unittest -q` gave exit 1 (expected 0) on your branch merged with main. Output tail:\n======================================================================\nFAIL: test_ok (tests.test_wrap.WrapCliTest.test_ok)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"$TMP/laneproof-mdtable-R004-y7u3k83n/tests/test_wrap.py\", line 34, in test_ok\n    self.assertEqual(self.run_cli(\"wrap\", \"aaa bbb ccc\", \"--width\", \"7\"), (0, \"aaa bbb\\nccc\\n\", \"\"))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Tuples differ: (None, 'aaa bbb\\nccc\\n', '') != (0, 'aaa bbb\\nccc\\n', '')\n\nFirst differing element 0:\nNone\n0\n\n- (None, 'aaa bbb\\nccc\\n', '')\n?  ^^^^\n\n+ (0, 'aaa bbb\\nccc\\n', '')\n?  ^\n\n\n----------------------------------------------------------------------\nRan 60 tests in 0.364s\n\nFAILED (failures=1)\n"
+     ],
+     "commit": "5fb286126a61ce695719f08f58c5e5475fbcfad1",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.ToMarkdownTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.ToMarkdownTest.test_errors",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_mdtable.CliTest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -A30 '## Unreleased' CHANGELOG.md | grep '`mdtable`'",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": false,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": false,
+       "exit": 1
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 18,
+    "input_tokens": 40,
+    "output_tokens": 6331,
+    "cache_read_tokens": 245645,
+    "cache_write_tokens": 18355,
+    "runs": 3,
+    "session_id": "cd6fee2e-7813-43a8-ab63-5ca8f3a770ca",
+    "final": "I merged the latest `main` into the branch again and resolved the conflicts in `CHANGELOG.md`, `README.md` and `textkit/cli.py`. `python3 -m unittest -q` now passes all 46 tests on the merged tree. I haven't re-run the gate.\n\n- **`test_top` failure:** the conflict in `cli.py` left `main`'s `top` command without its `return 0`, because my side's `mdtable` had been sharing that line. `_top` returned `None`, which is what the gate's test caught. Each command now has its own `return 0`.\n- **Imports:** `main`'s import block had three overlapping `from . import` lines. I replaced them with one line covering `core`, `duration`, `mdtable`, `near`, `roman`, `rot` and `topwords`.\n- **README and CHANGELOG:** the `mdtable` row and bullet sit alongside everyone else's, with no conflict markers left. `python3 -m textkit commands` lists `mdtable`.\n- **CLI check:** `printf \"a,b\\n1,2\\n\" | python3 -m textkit mdtable` prints the three-line table.\n- **Receipt:** I widened the c5 grep window from `-A8` to `-A30`, since `## Unreleased` keeps growing as other lanes land. `.laneproof-receipt.json` still has `status: done` and the same FACT claims.\n\nThe merge is committed. `.laneproof-receipt.json` didn't appear in `git status` either before or after the edit, so the receipt may not be tracked."
+   },
+   "claim_commit": null
+  }
+ ]
+}

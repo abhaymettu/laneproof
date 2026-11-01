@@ -1,0 +1,40 @@
+id = "jsonout"
+title = "global --json output"
+scope = ["textkit/*", "tests/*", "README.md", "CHANGELOG.md"]
+protect = ["tests/test_docs.py", "tests/test_core.py", "tests/test_cli.py"]
+check = "python3 -m unittest -q"
+prompt = """This is the textkit repository (read README.md for its conventions).
+
+Add a global `--json` option, given before the command: `python3 -m textkit --json <command> [args...]`.
+- It runs the command as usual, but instead of the plain output it prints one JSON object on stdout:
+  `{"command": "<name>", "exit": <exit status>, "output": [<each line the command printed to stdout, without the newline>]}`.
+- It must work for every registered command without changing the commands themselves, including commands
+  added later, so implement it once in `main()`.
+- On an error (a ValueError), stderr still gets `error: <message>`, the process exits 2, and stdout gets the JSON
+  object with `"exit": 2`.
+- Without `--json`, nothing changes.
+"""
+
+[[criteria]]
+id = "c1"
+text = "`python3 -m textkit --json shout hi` prints {\"command\": \"shout\", \"exit\": 0, \"output\": [\"HI\"]}, and the same shape for every other command"
+
+[[criteria]]
+id = "c2"
+text = "`--json` works for every registered command, including ones added after this change, because it is implemented in main()"
+
+[[criteria]]
+id = "c3"
+text = "with `--json`, a ValueError gives exit status 2, `error:` on stderr, and the JSON object with \"exit\": 2 on stdout"
+
+[[criteria]]
+id = "c4"
+text = "README.md documents `--json` in its Conventions section"
+
+[[criteria]]
+id = "c5"
+text = "CHANGELOG.md has a new bullet under `## Unreleased` that names `--json` in backticks"
+
+[[criteria]]
+id = "c6"
+text = "tests/test_json.py covers `--json`, and `python3 -m unittest` passes"

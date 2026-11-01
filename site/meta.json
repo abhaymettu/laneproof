@@ -1,0 +1,15 @@
+{
+  "title": "laneproof",
+  "summary": "Run many coding agents in parallel and count only the work that lands on main with evidence re-run on the merged result.",
+  "repo": "https://github.com/abhaymettu/laneproof",
+  "paper_pdf": "paper/laneproof.pdf",
+  "hero_image": "docs/demo.svg",
+  "headline_numbers": [
+    {"label": "wrong status reports from laneproof, 84 lanes", "value": "0", "command": "python3 bench/score.py"},
+    {"label": "wrong self-reports from agents in worktrees / a shared checkout, 84 lanes each", "value": "20 / 16", "command": "python3 bench/score.py"},
+    {"label": "tasks done on main: shared checkout vs laneproof", "value": "84/84 vs 73/84", "command": "python3 bench/score.py"},
+    {"label": "mean wall clock per run: shared vs laneproof", "value": "129 s vs 347 s", "command": "python3 bench/score.py"},
+    {"label": "gate run time for 8 tasks, strict vs union merging", "value": "810 s vs 201 s", "command": "python3 bench/score.py"}
+  ],
+  "reproduce": "bench/all.sh sonnet 3 4 coupled && python3 bench/score.py"
+}

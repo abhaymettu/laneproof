@@ -1,0 +1,224 @@
+{
+ "condition": "worktree",
+ "suite": "independent",
+ "rep": 3,
+ "model": "sonnet",
+ "parallel": 4,
+ "wall_seconds": 112.7,
+ "final_commit": "98e0586929690079cb832d9816135d90305dfcef",
+ "lanes": [
+  {
+   "seconds": 25.1,
+   "claim": "done",
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 1758,
+    "cache_read_tokens": 26787,
+    "cache_write_tokens": 5150,
+    "runs": 1,
+    "session_id": "3d21b86e-e7fb-4007-a82f-3e4fe8050e5a",
+    "final": "I added `textkit/duration.py` with `parse_duration` and `format_duration`, and the `dur` command. `python3 -m unittest` passes (9 tests). I also ran the CLI by hand: `dur 30m1h` printed `error: invalid duration: '30m1h'` and exited 2, and `commands` now lists `dur`. I didn't separately run `dur 1h30m` or `dur 5400` by hand; the new tests cover both (5400 and `1h30m`).\n\n- **`dur` command:** it is registered in `textkit/cli.py`. It treats VALUE as seconds when it is all digits, and otherwise parses it as a duration.\n- **Docs:** I added a `dur` row to the README \"Commands\" table and a bullet under `## Unreleased` in `CHANGELOG.md`.\n- **Tests:** `tests/test_duration.py` covers both functions, including the invalid inputs and `format_duration(-1)`, and the CLI cases above.\n\nI haven't committed anything.\n\nSTATUS: done"
+   },
+   "task": "duration",
+   "claim_commit": "0e9a21c28e801eb51d0ff442d38373d16028e561",
+   "merged": true,
+   "conflicts": []
+  },
+  {
+   "seconds": 71.1,
+   "claim": "done",
+   "usage": {
+    "turns": 13,
+    "input_tokens": 30,
+    "output_tokens": 4243,
+    "cache_read_tokens": 134844,
+    "cache_write_tokens": 10677,
+    "runs": 3,
+    "session_id": "259ad40c-b823-4c33-82f0-ae44e518fa11",
+    "final": "I merged `main` into `lane/mdtable` again. The conflicts were in `CHANGELOG.md`, `README.md` and `textkit/cli.py`, and I kept both sides in each file.\n\n- **Imports:** `cli.py` now has `from . import core, duration, mdtable, near`.\n- **Commands:** the `mdtable` and `near` handlers are both registered. The README table has rows for `dur`, `mdtable` and `near`, and the changelog has bullets for all three.\n- **Checks:** `python3 -m unittest` passes (20 tests). A valid CSV piped to `mdtable` prints the three-line table. A ragged CSV exits 2 with `error:` on stderr. `python3 -m textkit commands` lists `commands`, `count`, `dur`, `mdtable`, `near` and `shout`.\n\nThe merge is committed and the working tree is clean.\n\nSTATUS: done"
+   },
+   "task": "mdtable",
+   "claim_commit": "6ba131956c51c66b221d8519d6b15d5e2b023ab3",
+   "merged": false,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ],
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ],
+    [
+     "CHANGELOG.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 49.8,
+   "claim": "done",
+   "usage": {
+    "turns": 9,
+    "input_tokens": 20,
+    "output_tokens": 2925,
+    "cache_read_tokens": 79528,
+    "cache_write_tokens": 7923,
+    "runs": 2,
+    "session_id": "c03a56db-6b19-4214-83a3-db11ffffa1ba",
+    "final": "I merged `main` into `lane/near`. The conflicts were in `CHANGELOG.md`, `README.md` and `textkit/cli.py`, and I kept both sides in each:\n\n- **`CHANGELOG.md`:** both bullets are under `## Unreleased`.\n- **`README.md`:** the `dur` and `near` rows are both in the Commands table.\n- **`textkit/cli.py`:** the import is now `from . import core, duration, near`, and both the `near` and `dur` commands are registered.\n\nNo conflict markers are left. `python3 -m unittest` passes (13 tests). `near helo hello help` prints `hello`, and `commands` lists `dur` and `near`. I committed the merge, and the working tree is clean.\n\nSTATUS: done"
+   },
+   "task": "near",
+   "claim_commit": "a76dbf1b604f04bcb0ca6ceddb7b9a43fedc78b3",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 70.9,
+   "claim": "done",
+   "usage": {
+    "turns": 15,
+    "input_tokens": 34,
+    "output_tokens": 4765,
+    "cache_read_tokens": 164432,
+    "cache_write_tokens": 11721,
+    "runs": 3,
+    "session_id": "fb791d67-bd51-4db8-b049-67c6b48056cd",
+    "final": "I merged `main` into `lane/roman` again, this time picking up the new `near` command. The merge is committed, and `python3 -m unittest` passes all 21 tests.\n\n- **`CHANGELOG.md`:** the `roman`, `near` and `dur` bullets are all kept.\n- **`README.md`:** the table has rows for `dur`, `near` and `roman`, in alphabetical order.\n- **`textkit/cli.py`:** the import is `from . import core, duration, near, roman`, and all three commands are registered.\n\nI ran `roman 1994` (prints `MCMXCIV`), `near cat cut bat` (prints `cut`) and `commands` (lists `roman` and `near`). `roman IIII` printed an `error:` message and exited 2.\n\nSTATUS: done"
+   },
+   "task": "roman",
+   "claim_commit": "66ee160f4384de7a04cbffa50bff8c4a644c0459",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ],
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 61.3,
+   "claim": "done",
+   "usage": {
+    "turns": 15,
+    "input_tokens": 34,
+    "output_tokens": 4185,
+    "cache_read_tokens": 161844,
+    "cache_write_tokens": 10089,
+    "runs": 3,
+    "session_id": "b03ef2cf-05fc-4bb8-8c71-4032f67cc322",
+    "final": "I merged `main` into `lane/rot` again and committed the result as `5496fc7`. The working tree is clean.\n\n- **Conflicts:** both were add-vs-add collisions with the new `roman` command, in `README.md` and `textkit/cli.py`. I kept both sides.\n  - `README.md`: the Commands table has both rows, with `roman` placed before `rot` to keep the alphabetical order.\n  - `textkit/cli.py`: the import line is now `from . import core, duration, near, roman, rot`.\n- **Changelog:** `CHANGELOG.md` merged without conflict and has bullets for `roman`, `near`, `dur` and `rot` under `## Unreleased`.\n- **Checks:** `python3 -m unittest` passes (26 tests). `python3 -m textkit commands` lists `commands`, `count`, `dur`, `near`, `roman`, `rot` and `shout`. `rot abc --n -1` still prints `zab`.\n\nSTATUS: done"
+   },
+   "task": "rot",
+   "claim_commit": "5496fc7624b32e227cd4c8f81a988a6248ae35e9",
+   "merged": true,
+   "conflicts": [
+    [
+     "README.md",
+     "textkit/cli.py"
+    ],
+    [
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 49.6,
+   "claim": "done",
+   "usage": {
+    "turns": 13,
+    "input_tokens": 30,
+    "output_tokens": 3657,
+    "cache_read_tokens": 143244,
+    "cache_write_tokens": 11275,
+    "runs": 3,
+    "session_id": "81e6ad5a-32b6-4bcc-987d-18a40a7d2f20",
+    "final": "I merged `main` into the branch again and resolved the conflicts in `CHANGELOG.md`, `README.md` and `textkit/cli.py`. Both sides are kept, and the merge is committed.\n\n- **`CHANGELOG.md` and `README.md`:** both now have the `rot` and `slug` entries.\n- **`textkit/cli.py`:** the import line is `from . import core, duration, near, roman, rot, slug`, and the `rot` and `slug` commands are both registered.\n\n`python3 -m unittest` passes (29 tests). `commands` lists `rot` and `slug`. `slug \"H\u00e9llo, W\u00f6rld!\"` prints `hello-world` and `rot abc` prints `nop`. No conflict markers remain and the working tree is clean.\n\nSTATUS: done"
+   },
+   "task": "slug",
+   "claim_commit": "1b9535d1f88b90b6268002a66ba52929aaad4f49",
+   "merged": true,
+   "conflicts": [
+    [
+     "README.md",
+     "textkit/cli.py"
+    ],
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 41.8,
+   "claim": "done",
+   "usage": {
+    "turns": 12,
+    "input_tokens": 28,
+    "output_tokens": 3761,
+    "cache_read_tokens": 136022,
+    "cache_write_tokens": 11237,
+    "runs": 3,
+    "session_id": "d66c2cf5-7fd0-44b1-af6e-7db3164bbf45",
+    "final": "I merged `main` into `lane/topwords`. The only conflict was the import line in `textkit/cli.py`, which is now `from . import core, duration, near, roman, rot, slug, topwords`.\n\n- **Tests:** `python3 -m unittest` passes with 36 tests.\n- **CLI:** `top \"b a b c a b\" --k 2` prints `b 3` then `a 2`. `top x --k 0` prints `error: k must be at least 1` and exits 2. `commands` lists `slug` and `top` along with the rest.\n- **Docs:** `CHANGELOG.md` and `README.md` merged cleanly and still carry my `top` bullet and table row. No conflict markers are left, and the merge is committed.\n\nSTATUS: done"
+   },
+   "task": "topwords",
+   "claim_commit": "1f4e88448150134b9def27d3d4700d2cee12d630",
+   "merged": false,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ],
+    [
+     "textkit/cli.py"
+    ],
+    [
+     "CHANGELOG.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 39.1,
+   "claim": "done",
+   "usage": {
+    "turns": 12,
+    "input_tokens": 26,
+    "output_tokens": 3893,
+    "cache_read_tokens": 132473,
+    "cache_write_tokens": 11314,
+    "runs": 2,
+    "session_id": "ee6062bc-505b-421f-8168-50702e50100a",
+    "final": "I merged `main` into `lane/wrap`, resolved the conflicts in `CHANGELOG.md` and `textkit/cli.py`, and committed the merge. `python3 -m unittest` passes all 37 tests.\n\n- **`textkit/cli.py`:** the import line now reads `core, duration, near, roman, rot, slug, wrap`. The `rot`, `slug` and `wrap` commands are all registered.\n- **`CHANGELOG.md`:** the `wrap` bullet sits alongside the `rot` and `slug` bullets under `## Unreleased`.\n- **`README.md`:** it auto-merged without conflict. The table has rows for all three new commands.\n\nI re-ran the CLI after the merge. `wrap \"aaa bbb ccc\" --width 7` still prints `aaa bbb` and `ccc`, and `commands` lists `rot`, `slug` and `wrap`.\n\nSTATUS: done"
+   },
+   "task": "wrap",
+   "claim_commit": "d921620ff982b44ab3755b954822d9ecac68c20a",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "textkit/cli.py"
+    ]
+   ]
+  }
+ ]
+}

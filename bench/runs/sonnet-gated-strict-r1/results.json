@@ -1,0 +1,640 @@
+{
+ "condition": "gated-strict",
+ "rep": 1,
+ "model": "sonnet",
+ "parallel": 4,
+ "wall_seconds": 810.4,
+ "final_commit": "9223b93748f888755d667f7031a5faeb32f7336e",
+ "lanes": [
+  {
+   "task": "duration",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 18.6,
+   "attempts": 1,
+   "verdicts": [
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "b70341fcc2620343f87d82af08b3188578c97fa8",
+     "replays": [
+      {
+       "cmd": "python3 -m textkit dur 1h30m",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_duration.DurationTest.test_parse_invalid tests.test_duration.DurationTest.test_format",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit dur 5400",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '^- .*`dur`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 2209,
+    "cache_read_tokens": 27868,
+    "cache_write_tokens": 5813,
+    "runs": 1,
+    "session_id": "1ce0574c-41aa-436f-a596-3d1a34fe8c33",
+    "final": "`parse_duration`, `format_duration` and the `dur` command are in, and `python3 -m unittest` passes (9 tests).\n\nI also ran the CLI by hand:\n- `python3 -m textkit dur 30m1h` prints `error: invalid duration: '30m1h'` and exits 2.\n- `python3 -m textkit commands` lists `dur`.\n\nI did not run `dur 1h30m` or `dur 5400` directly. The new CLI test checks them, and it asserts 5400 and `1h30m`.\n\n- **Code:** `textkit/duration.py` holds the two functions, and `dur` is registered in `textkit/cli.py`.\n- **Docs:** `README.md` has a `dur` row in the Commands table. `CHANGELOG.md` has a new bullet under `## Unreleased` that names `dur` in backticks.\n- **Tests:** `tests/test_duration.py` covers the examples and invalid inputs from your spec, plus the CLI command. The existing docs test, which compares the README table against the command registry, still passes.\n\n`.laneproof-receipt.json` is written at the worktree root, with a FACT command for each criterion c1\u2013c6. I did not re-run the receipt commands themselves, only the checks above."
+   },
+   "claim_commit": "b70341fcc2620343f87d82af08b3188578c97fa8"
+  },
+  {
+   "task": "near",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 34.7,
+   "attempts": 2,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "aa926bb8e740ee0785a8a323e23b47a80f533d62",
+     "replays": []
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "efe681d0e9002e3cf92960f2ebef2f18340f118a",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_near",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_near.NearTest.test_negative",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit near helo hello help",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit near zzzz hello",
+       "ok": true,
+       "exit": 1
+      },
+      {
+       "cmd": "python3 -m textkit near helo hello --max -1",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '^| `near` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '`near`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 9,
+    "input_tokens": 20,
+    "output_tokens": 3457,
+    "cache_read_tokens": 89541,
+    "cache_write_tokens": 9134,
+    "runs": 2,
+    "session_id": "51f0ffe9-9c8f-4e86-8ee6-c5dc1e263181",
+    "final": "I merged main into the branch and resolved all three conflicts by keeping both sides. The `near` and `dur` entries are now both in `CHANGELOG.md`, the README table and `textkit/cli.py`. `python3 -m unittest` passes (13 tests). `near helo hello help` prints `hello`, `near zzzz hello` exits 1, `near helo hello --max -1` exits 2, and `commands` lists both `dur` and `near`.\n\nThe merge is committed as `f2cbb97`. The existing receipt (`.laneproof-receipt.json`) is unchanged, since its FACT commands didn't depend on the conflicting lines. I didn't rewrite it."
+   },
+   "claim_commit": "efe681d0e9002e3cf92960f2ebef2f18340f118a"
+  },
+  {
+   "task": "roman",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 44.7,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "1e703aa3f95b05277bf4157e7277ff18e9b23972",
+     "replays": []
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "fa89f0e3e6f2642dbe977eb255c21ed87f98cd01",
+     "replays": []
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "fe17df62efe4391ecacaa3deefa20438f02d5e18",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_round_trip",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_to_roman_invalid tests.test_roman.RomanTest.test_from_roman_invalid",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit roman 1994",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit roman MCMXCIV",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_roman.RomanTest.test_cli",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '| `roman` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -F '`roman`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 12,
+    "input_tokens": 28,
+    "output_tokens": 4403,
+    "cache_read_tokens": 132012,
+    "cache_write_tokens": 10694,
+    "runs": 3,
+    "session_id": "6ac87604-fded-42a9-ba76-98439684519f",
+    "final": "I merged the latest `main` into the branch and resolved the two conflicts, keeping both sides:\n\n- **`CHANGELOG.md`:** both the `roman` and `near` bullets are under `## Unreleased`.\n- **`textkit/cli.py`:** the import line is now `from . import core, duration, near, roman`.\n\nAfter the merge, `python3 -m unittest` passes (18 tests). `python3 -m textkit commands` lists `roman` alongside `near` and `dur`, and `roman MCMXCIV` prints `1994`. No conflict markers remain.\n\nI left `.laneproof-receipt.json` as it was, with status `done` and a FACT command for each of c1 to c6. I ran the full suite but not each receipt command separately."
+   },
+   "claim_commit": "fe17df62efe4391ecacaa3deefa20438f02d5e18"
+  },
+  {
+   "task": "mdtable",
+   "claim": "failed",
+   "state": "failed",
+   "seconds": 51.3,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "5f54c7023af446d0afe157acccb09e5e95f39175",
+     "replays": []
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "849c87b740960bf644814ed873a17f96c98ef790",
+     "replays": []
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "e38b4882047bdae3118cd0256577e4705bf10efb",
+     "replays": []
+    }
+   ],
+   "usage": {
+    "turns": 13,
+    "input_tokens": 28,
+    "output_tokens": 4720,
+    "cache_read_tokens": 133240,
+    "cache_write_tokens": 11227,
+    "runs": 3,
+    "session_id": "7433d365-6c69-4d44-9ef9-578878de64e2",
+    "final": "I merged `main` into the branch again and resolved the conflicts in `CHANGELOG.md` and `textkit/cli.py`. The merged tree passes `python3 -m unittest` (20 tests).\n\n- **`textkit/cli.py`:** the import is now `from . import core, duration, mdtable, near`, and both the `mdtable` and `near` commands are registered.\n- **`CHANGELOG.md`:** the `mdtable` bullet and main's new `near` bullet both sit under `## Unreleased`, alongside the earlier `dur` bullet.\n- **`README.md`:** it merged without conflict. I didn't check that it has a row for `near`, though the existing docs test passes.\n\nOn the merged tree, `printf 'a,b\\n1,2\\n' | python3 -m textkit mdtable` prints the three-line table, and `python3 -m textkit commands` lists `commands`, `count`, `dur`, `mdtable`, `near` and `shout`.\n\nI committed the merge. The receipt is unchanged and still says `\"status\":\"done\"`. I didn't re-run its FACT commands one by one."
+   },
+   "claim_commit": null
+  },
+  {
+   "task": "topwords",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 22.0,
+   "attempts": 1,
+   "verdicts": [
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "22e1edab0a1a898af2e1eadb9a75ae9e074f9891",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_topwords.TopWordsTest.test_order_and_case tests.test_topwords.TopWordsTest.test_ties_alphabetical tests.test_topwords.TopWordsTest.test_split_on_non_letters",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_topwords.TopWordsTest.test_invalid_k",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit top \"b a b c a b\" --k 2",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit top x --k 0",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_docs",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '^- .*`top`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 5,
+    "input_tokens": 10,
+    "output_tokens": 2908,
+    "cache_read_tokens": 41041,
+    "cache_write_tokens": 8321,
+    "runs": 1,
+    "session_id": "8e4be55b-33b7-4669-b5d4-5a05aa19e588",
+    "final": "`top_words(text, k)` and the `top TEXT [--k N]` command are in. `python3 -m unittest` passes with 25 tests, and all eight FACT commands in the receipt behave as expected. The `top x --k 0` check exits 2 as the receipt expects, and I didn't separately look at its `error:` line on stderr.\n\n- **Function:** `textkit/topwords.py` has `top_words`, which raises `ValueError` when k < 1. The CLI wiring is in `textkit/cli.py`, with the default `--k` set to 3.\n- **Docs:** I added a `top` row to the README \"Commands\" table and a bullet naming `top` under `## Unreleased` in `CHANGELOG.md`.\n- **Tests:** `tests/test_topwords.py` covers the function and the CLI command.\n- **Receipt:** `.laneproof-receipt.json` is at the worktree root with a FACT for each of c1\u2013c6. I haven't committed anything."
+   },
+   "claim_commit": "22e1edab0a1a898af2e1eadb9a75ae9e074f9891"
+  },
+  {
+   "task": "slug",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 51.1,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "098e782ede2331f2574d959808bb126bb2a07e43",
+     "replays": []
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "b7a2e60f8f00afc3deffe0c3067c946ea10cca99",
+     "replays": []
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "8a274823cdbe6f77d0fe7f717af944238f83b531",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_slug",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_slug.SlugifyTest.test_empty",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"H\u00e9llo, W\u00f6rld!\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"a b\" --sep _",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit slug \"!!!\"",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_docs",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '`slug`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 15,
+    "input_tokens": 34,
+    "output_tokens": 5455,
+    "cache_read_tokens": 178707,
+    "cache_write_tokens": 12016,
+    "runs": 3,
+    "session_id": "33790ec6-75eb-4bb7-a93b-ad2cf741bc4a",
+    "final": "I merged `main` into the branch again and resolved the conflicts in `CHANGELOG.md` and `textkit/cli.py`. The `slug` and `top` entries are both kept, and the import line now reads `core, duration, near, roman, slug, topwords`.\n\nThe full `python3 -m unittest` run passes (30 tests). `python3 -m textkit commands` lists `slug` alongside `roman` and `top`, and `slug \"a b\" --sep _` prints `a_b`. `slug \"!!!\"` prints `error: nothing left to slugify` and exits 2.\n\nI committed the merge and rewrote `.laneproof-receipt.json` with status done and the same FACT commands for c1\u2013c6."
+   },
+   "claim_commit": "8a274823cdbe6f77d0fe7f717af944238f83b531"
+  },
+  {
+   "task": "wrap",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 50.7,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "91249ec1cc2eb482760ad8a88522641ef3497a81",
+     "replays": []
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "b0469b825188ebf2da2691a39885e55a3085b4bd",
+     "replays": []
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "958dcce681ab1bc8d64d70264e28bc1d1b5d296b",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_wrap.WrapTest.test_greedy tests.test_wrap.WrapTest.test_paragraphs tests.test_wrap.WrapTest.test_long_and_hyphen",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_wrap.WrapTest.test_bad_width",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit wrap \"aaa bbb ccc\" --width 7",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit wrap x --width 0",
+       "ok": true,
+       "exit": 2
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_docs",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q 'Added `wrap`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 15,
+    "input_tokens": 32,
+    "output_tokens": 4799,
+    "cache_read_tokens": 165566,
+    "cache_write_tokens": 11811,
+    "runs": 3,
+    "session_id": "9158f541-385d-4b55-a2fc-2c99af0fbced",
+    "final": "Merged `main` again and fixed the one conflict, in the `textkit/cli.py` import line. It's now `from . import core, duration, near, roman, slug, topwords, wrap`, so the new `slug` command and `wrap` are both registered. `CHANGELOG.md` and `README.md` merged without conflicts.\n\nThe checks pass on the merged tree:\n- `python3 -m unittest` passes with 36 tests.\n- `python3 -m textkit commands` lists `commands count dur near roman shout slug top wrap`.\n- `wrap \"aaa bbb ccc\" --width 7` prints `aaa bbb` and `ccc`.\n- `wrap x --width 0` prints `error: width must be at least 1` and exits 2.\n\nI committed the merge. I didn't change `.laneproof-receipt.json`; its commands and `status: done` still match the code."
+   },
+   "claim_commit": "958dcce681ab1bc8d64d70264e28bc1d1b5d296b"
+  },
+  {
+   "task": "rot",
+   "claim": "done",
+   "state": "landed",
+   "seconds": 785.4,
+   "attempts": 3,
+   "verdicts": [
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "0fa14b269f350e4939a1fa862a795b91a585983f",
+     "replays": []
+    },
+    {
+     "state": "rejected",
+     "reasons": [
+      "your branch conflicts with main in: CHANGELOG.md, README.md, textkit/cli.py. Run `git merge main` in your worktree, resolve, keep both sides' intent, and re-run your checks"
+     ],
+     "commit": "deb139c204f5572a6470f82793375e2159ba746c",
+     "replays": []
+    },
+    {
+     "state": "landed",
+     "reasons": [],
+     "commit": "9223b93748f888755d667f7031a5faeb32f7336e",
+     "replays": [
+      {
+       "cmd": "python3 -m unittest tests.test_rot.RotTest.test_shift",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_rot.RotTest.test_invalid_n",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit rot \"Hello, World!\"",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit rot abc --n -1",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest tests.test_rot.RotTest.test_cli",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m textkit commands",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q '^| `rot` |' README.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "grep -q 'Added `rot`' CHANGELOG.md",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest",
+       "ok": true,
+       "exit": 0
+      },
+      {
+       "cmd": "python3 -m unittest -q",
+       "ok": true,
+       "exit": 0
+      }
+     ]
+    }
+   ],
+   "usage": {
+    "turns": 24,
+    "input_tokens": 54,
+    "output_tokens": 7811,
+    "cache_read_tokens": 347308,
+    "cache_write_tokens": 19390,
+    "runs": 5,
+    "session_id": "137c1f33-1094-4242-a753-2f7252ddc196",
+    "final": "I merged `main` into the branch again and resolved the conflicts in `CHANGELOG.md`, `README.md` and `textkit/cli.py`. After the merge `python3 -m unittest` passes (39 tests), and the receipt is rewritten with status done.\n\n- **Resolution:** I kept both sides. The `rot`, `wrap`, `top` and `slug` entries are all in the CHANGELOG and README. `cli.py` imports and registers all of those commands plus `roman` and `near`. The merge is committed as `7bd8794`, and the worktree is clean.\n- **Checks after the merge:**\n  - `python3 -m textkit commands` lists `rot`, `slug`, `top` and `wrap` along with the others.\n  - `rot abc --n -1` prints `zab`.\n  - `rot abc --n 1.5` prints `error: n must be an integer, got '1.5'` and exits 2.\n  - The README row grep, the CHANGELOG bullet grep and `tests.test_rot` all exit 0.\n- **Receipt:** It still has a FACT for each of c1\u2013c6, and only the summary line changed. I didn't re-run every command in it one by one.\n\nI'm stopping here, as you asked."
+   },
+   "claim_commit": "9223b93748f888755d667f7031a5faeb32f7336e"
+  }
+ ]
+}

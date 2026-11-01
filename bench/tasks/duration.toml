@@ -1,0 +1,37 @@
+id = "duration"
+title = "durations"
+scope = ["textkit/*", "tests/*", "README.md", "CHANGELOG.md"]
+protect = ["tests/test_docs.py", "tests/test_core.py", "tests/test_cli.py"]
+check = "python3 -m unittest -q"
+prompt = """This is the textkit repository (read README.md for its conventions).
+
+Add `textkit/duration.py` with `parse_duration(s)` and `format_duration(seconds)`:
+- parse_duration takes one or more `<digits><unit>` parts with units h, m, s, in that order, each unit at most once, no spaces, and returns total seconds as an int: "1h30m" -> 5400, "45s" -> 45, "2h5s" -> 7205, "90m" -> 5400.
+- Invalid input raises ValueError: "", "1x", "30m1h" (wrong order), "1h1h" (repeated unit), "1.5h", "h", "1h 30m".
+- format_duration returns the canonical form: hours, then minutes, then seconds, omitting zero parts, minutes and seconds below 60: 5400 -> "1h30m", 7205 -> "2h5s", 59 -> "59s", 0 -> "0s". Negative input raises ValueError.
+Add a CLI command `dur VALUE`: if VALUE is all digits print format_duration(int(VALUE)), otherwise print parse_duration(VALUE).
+"""
+
+[[criteria]]
+id = "c1"
+text = "parse_duration and format_duration give the specified results, including the examples"
+
+[[criteria]]
+id = "c2"
+text = "parse_duration raises ValueError for \"\", \"1x\", \"30m1h\", \"1h1h\", \"1.5h\", \"h\" and \"1h 30m\"; format_duration(-1) raises ValueError"
+
+[[criteria]]
+id = "c3"
+text = "`python3 -m textkit dur 1h30m` prints 5400; `dur 5400` prints 1h30m; `dur 30m1h` exits 2 with `error:` on stderr"
+
+[[criteria]]
+id = "c4"
+text = "the README \"Commands\" table has a row for `dur`, and `python3 -m textkit commands` lists it"
+
+[[criteria]]
+id = "c5"
+text = "CHANGELOG.md has a new bullet under `## Unreleased` that names `dur` in backticks"
+
+[[criteria]]
+id = "c6"
+text = "tests/test_duration.py covers the function and the CLI command, and `python3 -m unittest` passes"

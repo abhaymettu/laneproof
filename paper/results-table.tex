@@ -1,0 +1,24 @@
+\begin{tabular}{llrrrrrrr}
+\toprule
+model & condition & runs & truly done & said done, isn't & main green & bounces (wrong) & wall (s) & tokens (M) \\
+\midrule
+\multicolumn{9}{l}{\emph{haiku, coupled suite}} \\
+& sequential & 3 & 29/30 & 1 & 3/3 & -- & 326 & 3.29 \\
+& parallel, shared tree & 3 & 30/30 & 0 & 3/3 & -- & 144 & 4.82 \\
+& parallel, worktrees & 3 & 25/30 & 5 & 3/3 & -- & 171 & 7.19 \\
+& laneproof & 3 & 26/30 & 0 & 3/3 & 26 (0) & 404 & 9.99 \\
+\midrule
+\multicolumn{9}{l}{\emph{sonnet, coupled suite}} \\
+& sequential & 3 & 30/30 & 0 & 3/3 & -- & 216 & 0.97 \\
+& parallel, shared tree & 3 & 30/30 & 0 & 3/3 & -- & 174 & 1.72 \\
+& parallel, worktrees & 3 & 23/30 & 7 & 3/3 & -- & 115 & 2.9 \\
+& laneproof & 3 & 24/30 & 0 & 3/3 & 36 (1) & 437 & 3.0 \\
+\midrule
+\multicolumn{9}{l}{\emph{sonnet, independent suite}} \\
+& sequential & 3 & 24/24 & 0 & 3/3 & -- & 148 & 0.77 \\
+& parallel, shared tree & 3 & 24/24 & 0 & 3/3 & -- & 69 & 1.48 \\
+& parallel, worktrees & 3 & 16/24 & 8 & 3/3 & -- & 102 & 2.68 \\
+& laneproof, strict merge & 1 & 7/8 & 0 & 1/1 & 12 (0) & 810 & 1.24 \\
+& laneproof & 3 & 23/24 & 0 & 3/3 & 24 (0) & 201 & 2.85 \\
+\bottomrule
+\end{tabular}

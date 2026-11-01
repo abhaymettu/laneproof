@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "laneproof"
+version = "0.1.0"
+description = "Run many coding agents in parallel. Count only the work that lands with evidence."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = []
+
+[project.scripts]
+laneproof = "laneproof.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

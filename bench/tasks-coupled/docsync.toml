@@ -1,0 +1,30 @@
+id = "docsync"
+title = "README and registry agree"
+scope = ["textkit/*", "tests/*", "README.md", "CHANGELOG.md"]
+protect = ["tests/test_docs.py", "tests/test_core.py", "tests/test_cli.py"]
+check = "python3 -m unittest -q"
+prompt = """This is the textkit repository (read README.md for its conventions).
+
+The README "Commands" table and the command registry drift apart. Make them agree word for word:
+- For every registered command, the "what it does" cell in the README table must equal that command's `help`
+  string in `textkit/cli.py` exactly.
+- Add `tests/test_docsync.py`, which checks this for every command in `COMMANDS`, so it also covers commands
+  that are added later.
+- Fix any row or help string that disagrees today.
+"""
+
+[[criteria]]
+id = "c1"
+text = "tests/test_docsync.py fails if any registered command's README cell differs from its help string"
+
+[[criteria]]
+id = "c2"
+text = "every registered command's README cell equals its help string"
+
+[[criteria]]
+id = "c3"
+text = "CHANGELOG.md has a new bullet under `## Unreleased` that names `test_docsync` in backticks"
+
+[[criteria]]
+id = "c4"
+text = "`python3 -m unittest` passes"

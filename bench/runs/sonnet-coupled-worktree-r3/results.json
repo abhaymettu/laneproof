@@ -1,0 +1,246 @@
+{
+ "condition": "worktree",
+ "suite": "coupled",
+ "rep": 3,
+ "model": "sonnet",
+ "parallel": 4,
+ "wall_seconds": 87.1,
+ "final_commit": "13a5bf9d9a310611df3f32dc3cbe5be1e56d2bd2",
+ "lanes": [
+  {
+   "seconds": 11.2,
+   "claim": "done",
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 855,
+    "cache_read_tokens": 25261,
+    "cache_write_tokens": 3658,
+    "runs": 1,
+    "session_id": "078443f6-e5b4-43a8-8d4f-6c8da7d65913",
+    "final": "I added `tests/test_docsync.py`, which checks every command in `COMMANDS` against the README table. `python3 -m unittest` passes (6 tests).\n\n- **Mismatches:** there weren't any. The README cells and the `help` strings in `textkit/cli.py` already matched word for word for `commands`, `count` and `shout`, so I changed neither.\n- **How the test works:** it reads the README table and, for each command, requires a row whose cell equals that command's `help` string. It fails if a row is missing or a cell differs. Because it loops over `COMMANDS`, it also covers commands added later.\n- **Not run against a mismatch:** I didn't check that it fails when a cell differs.\n- **Changelog:** I added a bullet under `## Unreleased` in `CHANGELOG.md` that names `test_docsync` in backticks.\n\nSTATUS: done"
+   },
+   "task": "docsync",
+   "claim_commit": "9adb012fcf98737f0982e61b0b6b329eb606dbf5",
+   "merged": true,
+   "conflicts": []
+  },
+  {
+   "seconds": 47.8,
+   "claim": "done",
+   "usage": {
+    "turns": 15,
+    "input_tokens": 34,
+    "output_tokens": 4363,
+    "cache_read_tokens": 157704,
+    "cache_write_tokens": 10684,
+    "runs": 3,
+    "session_id": "3f7d2f29-fb36-47ce-a905-f31779ee35e1",
+    "final": "I merged `main` into `lane/duration`, resolved the conflicts in `CHANGELOG.md`, `README.md` and `textkit/cli.py`, and committed the merge as `c3d0d6e`. `python3 -m unittest` passes (18 tests).\n\nIn each file I kept both sides:\n- **`CHANGELOG.md`:** the bullets for `dur`, `--json`, `test_docsync` and `near` are all under `## Unreleased`.\n- **`README.md`:** the Commands table has rows for both `dur` and `near`.\n- **`textkit/cli.py`:** both commands are registered. The import is now `from . import core, duration, near`, and main's `--json` handling is untouched.\n\nI also checked `dur` by hand against the merged code. `--json dur 1h30m` prints `{\"command\": \"dur\", \"exit\": 0, \"output\": [\"5400\"]}`, and `dur 30m1h` still prints an `error:` message.\n\nSTATUS: done"
+   },
+   "task": "duration",
+   "claim_commit": "c3d0d6e06e0559760dd7381de0d6af2abcddd2b4",
+   "merged": false,
+   "conflicts": [
+    [
+     "CHANGELOG.md"
+    ],
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ],
+    [
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 22.4,
+   "claim": "done",
+   "usage": {
+    "turns": 8,
+    "input_tokens": 18,
+    "output_tokens": 2640,
+    "cache_read_tokens": 66832,
+    "cache_write_tokens": 6832,
+    "runs": 2,
+    "session_id": "0575b021-80e4-4d03-9ef1-38080a173df0",
+    "final": "I merged `main` into the branch. The only conflict was in `CHANGELOG.md`, and I kept both bullets under `## Unreleased`: my `--json` one and main's `test_docsync` one. `python3 -m unittest` passes with 10 tests. The 10 tests are the 9 from before plus main's new docsync test.\n\nI committed the merge. The tree is clean.\n\nSTATUS: done"
+   },
+   "task": "jsonout",
+   "claim_commit": "af595c4c7622cc1f19a03c2d18f7832912746255",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md"
+    ]
+   ]
+  },
+  {
+   "seconds": 39.5,
+   "claim": "done",
+   "usage": {
+    "turns": 13,
+    "input_tokens": 30,
+    "output_tokens": 3725,
+    "cache_read_tokens": 128421,
+    "cache_write_tokens": 9699,
+    "runs": 3,
+    "session_id": "5761bdb8-a977-48ef-8f2a-5cee3eac804e",
+    "final": "I merged `main` into `lane/mdtable` and committed the merge. `CHANGELOG.md` and `textkit/cli.py` conflicted, and I kept both sides in each.\n\n- **`CHANGELOG.md`:** the `mdtable`, `--json` and `test_docsync` bullets are all under `## Unreleased`.\n- **`textkit/cli.py`:** I kept the `csv` import alongside main's `contextlib`, `io` and `json` imports, and kept both the `mdtable` command and main's `--json` handling.\n\n`python3 -m unittest` passes with 17 tests. The `mdtable` command still prints its table, still exits 2 with an `error:` line on ragged CSV, and works with `--json`.\n\nSTATUS: done"
+   },
+   "task": "mdtable",
+   "claim_commit": "a38b73ac1812fea4f68a1a4243008f2904e3277a",
+   "merged": false,
+   "conflicts": [
+    [
+     "CHANGELOG.md"
+    ],
+    [
+     "CHANGELOG.md",
+     "textkit/cli.py"
+    ],
+    [
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 17.2,
+   "claim": "done",
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 2208,
+    "cache_read_tokens": 26614,
+    "cache_write_tokens": 5588,
+    "runs": 1,
+    "session_id": "f4634739-0831-4ed0-9209-901b06c8f875",
+    "final": "I added `textkit/near.py` with `levenshtein` and `closest`, and a `near` command in `textkit/cli.py`. `python3 -m unittest` passes (10 tests), and I ran two of the CLI checks by hand.\n\n- **Function behavior:** `levenshtein(\"kitten\", \"sitting\")` is 3. `closest` returns the nearest candidate within `max_distance`, takes the first one on ties, returns `None` for no match or an empty list, and raises `ValueError` when `max_distance < 0`.\n- **CLI:** `python3 -m textkit near helo hello help` prints `hello`, and `python3 -m textkit commands` lists `near`. I didn't run the `no match` and `--max -1` cases by hand; `tests/test_near.py` covers them (exit 1 with `no match` on stderr, and exit 2 with `error:` on stderr).\n- **Docs:** I added a README table row for `near` whose text matches the command's help string, because `test_docsync` requires that. I also added a bullet naming `near` in backticks under `## Unreleased` in `CHANGELOG.md`.\n- **Tests:** `tests/test_near.py` covers the functions and the CLI command.\n\nI didn't commit anything.\n\nSTATUS: done"
+   },
+   "task": "near",
+   "claim_commit": "7db1ac0cfec70eb4d044f93c0e9597ef31e004ca",
+   "merged": true,
+   "conflicts": []
+  },
+  {
+   "seconds": 60.5,
+   "claim": "done",
+   "usage": {
+    "turns": 16,
+    "input_tokens": 36,
+    "output_tokens": 4364,
+    "cache_read_tokens": 187721,
+    "cache_write_tokens": 11468,
+    "runs": 3,
+    "session_id": "689e201c-07e8-4be0-9720-eae2358acb2e",
+    "final": "I merged main into `lane/roman` again and committed the merge. The only conflict was the import line in `textkit/cli.py`, now `from . import core, near, roman, rot, topwords`, which keeps both sides.\n\nAll 38 tests pass, and no conflict markers are left. `python3 -m textkit commands` lists `roman` next to `near`, `rot` and `top`, and `python3 -m textkit roman 1994` prints `MCMXCIV`. `CHANGELOG.md` and `README.md` merged without conflicts and still have the `roman` entries.\n\nSTATUS: done"
+   },
+   "task": "roman",
+   "claim_commit": "47f6bf40bd9344b498397afe27fb74546c69e3e8",
+   "merged": false,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "textkit/cli.py"
+    ],
+    [
+     "textkit/cli.py"
+    ],
+    [
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 18.4,
+   "claim": "done",
+   "usage": {
+    "turns": 4,
+    "input_tokens": 8,
+    "output_tokens": 2248,
+    "cache_read_tokens": 28476,
+    "cache_write_tokens": 6339,
+    "runs": 1,
+    "session_id": "5047187d-f44c-418d-80ec-7944445ad709",
+    "final": "I added `rot(text, n)` in `textkit/rot.py` and the `rot TEXT [--n N]` command (default 13). `python3 -m unittest` passes (22 tests).\n\n- **c1/c2:** letters wrap and keep their case, and negative and large `n` work. Other characters are unchanged. A float, string, `None` or bool `n` raises `ValueError`.\n- **c3:** I ran `rot abc --n -1`, which prints `zab`, and `rot abc --n 1.5`, which exits 2 with `error:` on stderr. The tests cover `rot \"Hello, World!\"` printing `Uryyb, Jbeyq!`, but I didn't run that one by hand.\n- **c4/c5:** the README \"Commands\" table has a `rot` row, and `commands` lists it. `CHANGELOG.md` has a new bullet under `## Unreleased` that names `rot` in backticks.\n- **c6:** `tests/test_rot.py` covers the function and the CLI command.\n\nFor `--n 1.5` the exit 2 and the `error:` text come from argparse's `type=int` check, not from the function's `ValueError`. The message looks like `textkit rot: error: argument --n: invalid int value: '1.5'`, with the usage line above it. It is not the plain `error: <message>` form the README describes. If you want that exact form, I can change the option to take a string and let `rot` do the check.\n\nSTATUS: done"
+   },
+   "task": "rot",
+   "claim_commit": "8161f57a6e5ca60f041f1330558e6846d6ee3161",
+   "merged": true,
+   "conflicts": []
+  },
+  {
+   "seconds": 47.5,
+   "claim": "done",
+   "usage": {
+    "turns": 13,
+    "input_tokens": 28,
+    "output_tokens": 3419,
+    "cache_read_tokens": 121890,
+    "cache_write_tokens": 9514,
+    "runs": 3,
+    "session_id": "c1396232-26b5-4434-a74b-6ea7ec2a5283",
+    "final": "I merged `main` into the branch again and resolved the conflicts in `README.md` and `textkit/cli.py`. `python3 -m unittest` passes (46 tests). `commands` now lists `count`, `near`, `rot`, `shout`, `slug`, `top` and `wrap`, and `slug \"a b\" --sep _` prints `a_b`.\n\n`main` had added `top` and `wrap` in the same places where I had added `slug`, so I kept both sides:\n- **`README.md`:** the Commands table has rows for `slug`, `top` and `wrap`.\n- **`textkit/cli.py`:** the import is `from . import core, near, rot, slug, topwords, wrap`, and all three commands are registered.\n\nIn the README table, `shout` sits after `top`, so the rows aren't strictly alphabetical. That order came from `main`, and I left it alone.\n\nI committed the merge as \"Merge main into slug\".\n\nSTATUS: done"
+   },
+   "task": "slug",
+   "claim_commit": "14a5085e5ba4a560d2a3e68bd130b9962cf433b6",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "README.md",
+     "textkit/cli.py"
+    ],
+    [
+     "README.md",
+     "textkit/cli.py"
+    ]
+   ]
+  },
+  {
+   "seconds": 13.6,
+   "claim": "done",
+   "usage": {
+    "turns": 3,
+    "input_tokens": 6,
+    "output_tokens": 1746,
+    "cache_read_tokens": 19925,
+    "cache_write_tokens": 6116,
+    "runs": 1,
+    "session_id": "41616cae-c70d-4ca4-9b94-4295bb2d0584",
+    "final": "I added `top_words(text, k)` in `textkit/topwords.py` and the `top TEXT [--k N]` command (default 3). `python3 -m unittest` passes all 31 tests, including the new ones in `tests/test_topwords.py`. Running `python3 -m textkit top \"b a b c a b\" --k 2` prints `b 3` then `a 2`.\n\nI didn't run `top x --k 0` or `commands` by hand. The tests cover both: `k` of 0 exits 2 with `error:` on stderr, and `commands` lists `top`.\n\n- **README:** the Commands table has a `top` row with the help text \"list the most frequent words\".\n- **CHANGELOG:** there's a new bullet under `## Unreleased` that names `top` in backticks.\n- **Non-int `k`:** `top_words` raises `ValueError` for any non-int `k` (including `True`/`False` and floats) as well as for `k < 1`. You didn't ask for this; I copied it from how `rot` validates `n`.\n\nI didn't commit.\n\nSTATUS: done"
+   },
+   "task": "topwords",
+   "claim_commit": "a0d5aa2467890d0b8e2c5079365b6fceb8a277e7",
+   "merged": true,
+   "conflicts": []
+  },
+  {
+   "seconds": 31.3,
+   "claim": "done",
+   "usage": {
+    "turns": 9,
+    "input_tokens": 20,
+    "output_tokens": 3169,
+    "cache_read_tokens": 88942,
+    "cache_write_tokens": 8659,
+    "runs": 2,
+    "session_id": "8bb9a82a-8160-459c-8626-8fe7639331db",
+    "final": "I merged `main` into `lane/wrap` and resolved both conflicts, keeping `top` from main and `wrap` from this branch.\n\n- **`CHANGELOG.md`:** both bullets are under `## Unreleased`.\n- **`textkit/cli.py`:** the import is now `from . import core, near, rot, topwords, wrap`, and both the `top` and `wrap` commands are registered.\n- **README:** git merged it without conflict, and the table has rows for both `top` and `wrap`.\n\nNo conflict markers remain. `python3 -m unittest` passes (41 tests), and `python3 -m textkit commands` lists both `top` and `wrap`. I committed the merge as \"Merge main into lane/wrap\", and the working tree is clean.\n\nSTATUS: done"
+   },
+   "task": "wrap",
+   "claim_commit": "5755bd222747982c7fddd819f9507705f58c8064",
+   "merged": true,
+   "conflicts": [
+    [
+     "CHANGELOG.md",
+     "textkit/cli.py"
+    ]
+   ]
+  }
+ ]
+}

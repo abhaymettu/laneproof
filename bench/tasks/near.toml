@@ -1,0 +1,37 @@
+id = "near"
+title = "closest match"
+scope = ["textkit/*", "tests/*", "README.md", "CHANGELOG.md"]
+protect = ["tests/test_docs.py", "tests/test_core.py", "tests/test_cli.py"]
+check = "python3 -m unittest -q"
+prompt = """This is the textkit repository (read README.md for its conventions).
+
+Add `textkit/near.py` with `levenshtein(a, b)` and `closest(word, candidates, max_distance=2)`:
+- levenshtein is the standard edit distance (insertions, deletions, substitutions each cost 1): levenshtein("kitten", "sitting") == 3.
+- closest returns the candidate with the smallest distance to word, if that distance is at most max_distance; ties go to the candidate that comes first in the list; otherwise it returns None. An empty list returns None.
+- max_distance < 0 raises ValueError.
+Add a CLI command `near WORD CANDIDATE... [--max N]` (default 2) that prints the match, or prints `no match` to stderr and exits 1 when there is none.
+"""
+
+[[criteria]]
+id = "c1"
+text = "levenshtein is correct and closest picks the nearest candidate within max_distance, first one on ties"
+
+[[criteria]]
+id = "c2"
+text = "closest raises ValueError when max_distance < 0"
+
+[[criteria]]
+id = "c3"
+text = "`python3 -m textkit near helo hello help` prints hello; `near zzzz hello` prints `no match` to stderr and exits 1; `near helo hello --max -1` exits 2 with `error:` on stderr"
+
+[[criteria]]
+id = "c4"
+text = "the README \"Commands\" table has a row for `near`, and `python3 -m textkit commands` lists it"
+
+[[criteria]]
+id = "c5"
+text = "CHANGELOG.md has a new bullet under `## Unreleased` that names `near` in backticks"
+
+[[criteria]]
+id = "c6"
+text = "tests/test_near.py covers the function and the CLI command, and `python3 -m unittest` passes"

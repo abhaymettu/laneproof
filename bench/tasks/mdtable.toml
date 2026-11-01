@@ -1,0 +1,38 @@
+id = "mdtable"
+title = "markdown tables"
+scope = ["textkit/*", "tests/*", "README.md", "CHANGELOG.md"]
+protect = ["tests/test_docs.py", "tests/test_core.py", "tests/test_cli.py"]
+check = "python3 -m unittest -q"
+prompt = """This is the textkit repository (read README.md for its conventions).
+
+Add `textkit/mdtable.py` with `to_markdown(rows)`:
+- rows is a list of lists of strings; the first row is the header.
+- Output is a GitHub markdown table: `| a | b |` for the header, then `| --- | --- |`, then one line per data row, joined with "\\n" (no trailing newline).
+- Strip surrounding whitespace from every cell and escape `|` inside a cell as `\\|`.
+- Empty rows (no rows at all, or a header with no cells) and rows whose length differs from the header raise ValueError.
+Add a CLI command `mdtable` that reads CSV from standard input (use the csv module) and prints the table.
+"""
+
+[[criteria]]
+id = "c1"
+text = "to_markdown builds the header, separator and rows, strips cells and escapes pipes"
+
+[[criteria]]
+id = "c2"
+text = "to_markdown raises ValueError for no rows, an empty header, and ragged rows"
+
+[[criteria]]
+id = "c3"
+text = "`printf \"a,b\\n1,2\\n\" | python3 -m textkit mdtable` prints the three-line table; ragged CSV exits 2 with `error:` on stderr"
+
+[[criteria]]
+id = "c4"
+text = "the README \"Commands\" table has a row for `mdtable`, and `python3 -m textkit commands` lists it"
+
+[[criteria]]
+id = "c5"
+text = "CHANGELOG.md has a new bullet under `## Unreleased` that names `mdtable` in backticks"
+
+[[criteria]]
+id = "c6"
+text = "tests/test_mdtable.py covers the function and the CLI command, and `python3 -m unittest` passes"

@@ -1,0 +1,110 @@
+{"op": "reserve", "id": "R001", "holder": "docsync", "used": 1, "cap": 4, "at": "2026-11-01T08:28:59"}
+{"op": "claim", "id": "R001", "at": "2026-11-01T08:28:59"}
+{"op": "start", "lane": "docsync-R001", "reservation": "R001", "pid": 13248, "at": "2026-11-01T08:28:59"}
+{"op": "reserve", "id": "R002", "holder": "duration", "used": 2, "cap": 4, "at": "2026-11-01T08:28:59"}
+{"op": "claim", "id": "R002", "at": "2026-11-01T08:28:59"}
+{"op": "start", "lane": "duration-R002", "reservation": "R002", "pid": 13254, "at": "2026-11-01T08:28:59"}
+{"op": "reserve", "id": "R003", "holder": "jsonout", "used": 3, "cap": 4, "at": "2026-11-01T08:28:59"}
+{"op": "claim", "id": "R003", "at": "2026-11-01T08:28:59"}
+{"op": "start", "lane": "jsonout-R003", "reservation": "R003", "pid": 13260, "at": "2026-11-01T08:28:59"}
+{"op": "reserve", "id": "R004", "holder": "mdtable", "used": 4, "cap": 4, "at": "2026-11-01T08:28:59"}
+{"op": "claim", "id": "R004", "at": "2026-11-01T08:28:59"}
+{"op": "start", "lane": "mdtable-R004", "reservation": "R004", "pid": 13270, "at": "2026-11-01T08:28:59"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T08:28:59"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T08:29:02"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T08:29:05"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T08:29:08"}
+{"op": "reserve-refused", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T08:29:11"}
+{"op": "land", "lane": "docsync-R001", "task": "docsync", "commit": "255f1d1a11dd9c22dc6717a430f66e3e0cf3d4ff", "replays": 5, "at": "2026-11-01T08:29:11"}
+{"op": "release", "id": "R001", "reason": "landed", "at": "2026-11-01T08:29:11"}
+{"op": "reserve", "id": "R005", "holder": "near", "used": 4, "cap": 4, "at": "2026-11-01T08:29:14"}
+{"op": "claim", "id": "R005", "at": "2026-11-01T08:29:14"}
+{"op": "start", "lane": "near-R005", "reservation": "R005", "pid": 13655, "at": "2026-11-01T08:29:14"}
+{"op": "reserve-refused", "holder": "roman", "used": 4, "cap": 4, "at": "2026-11-01T08:29:14"}
+{"op": "land", "lane": "jsonout-R003", "task": "jsonout", "commit": "16bfe00ff379eba44b2abe5da3d8c7ace858ac09", "replays": 7, "at": "2026-11-01T08:29:15"}
+{"op": "release", "id": "R003", "reason": "landed", "at": "2026-11-01T08:29:15"}
+{"op": "reserve", "id": "R006", "holder": "roman", "used": 4, "cap": 4, "at": "2026-11-01T08:29:18"}
+{"op": "claim", "id": "R006", "at": "2026-11-01T08:29:18"}
+{"op": "start", "lane": "roman-R006", "reservation": "R006", "pid": 13777, "at": "2026-11-01T08:29:18"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T08:29:18"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T08:29:21"}
+{"op": "reserve-refused", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T08:29:24"}
+{"op": "land", "lane": "mdtable-R004", "task": "mdtable", "commit": "52bc6cef1ff7cd9b1e6ddb980cb76d37344dafbc", "replays": 9, "at": "2026-11-01T08:29:25"}
+{"op": "release", "id": "R004", "reason": "landed", "at": "2026-11-01T08:29:25"}
+{"op": "reserve", "id": "R007", "holder": "rot", "used": 4, "cap": 4, "at": "2026-11-01T08:29:28"}
+{"op": "claim", "id": "R007", "at": "2026-11-01T08:29:28"}
+{"op": "start", "lane": "rot-R007", "reservation": "R007", "pid": 14071, "at": "2026-11-01T08:29:28"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:28"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:31"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:34"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:37"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:42"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:45"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:48"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:51"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:54"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:29:57"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:00"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:03"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:06"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:09"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:12"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:15"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:18"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:21"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:24"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:27"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:30"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:33"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:36"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:39"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:42"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:45"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:48"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:51"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:54"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:30:57"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:00"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:03"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:06"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:09"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:12"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:15"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:18"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:21"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:24"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:27"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:30"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:33"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:36"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:39"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:42"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:45"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:48"}
+{"op": "reserve-refused", "holder": "slug", "used": 4, "cap": 4, "at": "2026-11-01T08:31:51"}
+{"op": "land", "lane": "duration-R002", "task": "duration", "commit": "c2f7dcffdf0baf7c86b610827a64374e79d70072", "replays": 10, "at": "2026-11-01T08:31:52"}
+{"op": "release", "id": "R002", "reason": "landed", "at": "2026-11-01T08:31:52"}
+{"op": "land", "lane": "near-R005", "task": "near", "commit": "775bb5d623e63ee637d084a27016ee32848ddbf6", "replays": 10, "at": "2026-11-01T08:31:53"}
+{"op": "release", "id": "R005", "reason": "landed", "at": "2026-11-01T08:31:53"}
+{"op": "reserve", "id": "R008", "holder": "slug", "used": 3, "cap": 4, "at": "2026-11-01T08:31:56"}
+{"op": "claim", "id": "R008", "at": "2026-11-01T08:31:56"}
+{"op": "start", "lane": "slug-R008", "reservation": "R008", "pid": 16122, "at": "2026-11-01T08:31:56"}
+{"op": "reserve", "id": "R009", "holder": "topwords", "used": 4, "cap": 4, "at": "2026-11-01T08:31:56"}
+{"op": "claim", "id": "R009", "at": "2026-11-01T08:31:56"}
+{"op": "start", "lane": "topwords-R009", "reservation": "R009", "pid": 16129, "at": "2026-11-01T08:31:56"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T08:31:56"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T08:31:59"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T08:32:02"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T08:32:06"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T08:32:09"}
+{"op": "reserve-refused", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T08:32:12"}
+{"op": "release", "id": "R007", "reason": "failed", "at": "2026-11-01T08:32:13"}
+{"op": "reserve", "id": "R010", "holder": "wrap", "used": 4, "cap": 4, "at": "2026-11-01T08:32:16"}
+{"op": "claim", "id": "R010", "at": "2026-11-01T08:32:16"}
+{"op": "start", "lane": "wrap-R010", "reservation": "R010", "pid": 16858, "at": "2026-11-01T08:32:16"}
+{"op": "land", "lane": "roman-R006", "task": "roman", "commit": "c0774d2e4cfdf6c27f1732d38ed2897f237b14bf", "replays": 10, "at": "2026-11-01T08:32:19"}
+{"op": "release", "id": "R006", "reason": "landed", "at": "2026-11-01T08:32:19"}
+{"op": "land", "lane": "wrap-R010", "task": "wrap", "commit": "be8354aa8d185edfc170a3748a240cf91b3f27ce", "replays": 9, "at": "2026-11-01T08:35:15"}
+{"op": "release", "id": "R010", "reason": "landed", "at": "2026-11-01T08:35:15"}
+{"op": "release", "id": "R009", "reason": "failed", "at": "2026-11-01T08:38:08"}
+{"op": "release", "id": "R008", "reason": "failed", "at": "2026-11-01T08:38:42"}
