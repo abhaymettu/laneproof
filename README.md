@@ -11,7 +11,12 @@ there, and only then moves `main`. An agent's "done" is a claim. A landed lane i
 
 ## The result
 
-84 lanes per condition (8 or 10 coding tasks, 4 at a time, Claude Sonnet 5.5 and Haiku 5.5, 3 runs per cell),
+Running agents in parallel is fast, and their own reports are where it goes wrong. In a shared checkout they said
+"blocked" about work that was finished; in separate worktrees they said "done" about work that never reached `main`.
+With laneproof, the status of every lane matched reality. It pays for that in time and some throughput, and the table
+shows how much.
+
+We ran 84 lanes per condition (8 or 10 coding tasks, 4 at a time, Claude Sonnet 5.5 and Haiku 5.5, 3 runs per cell),
 scored against hidden checks the agents never saw:
 
 | how the agents ran | tasks done on `main` | agent's report was wrong | wall clock per run (mean) |
