@@ -10,6 +10,7 @@ import time
 from . import __version__, admission, demo
 from .agents import from_spec
 from .gate import verify
+from .git import GitError
 from .lanes import Coordinator, save_results, state_dir
 from .tasks import load
 
@@ -118,6 +119,13 @@ def main(argv=None):
     except admission.Refused as e:
         print(f"refused: {e}", file=sys.stderr)
         return e.code
+    except GitError as e:
+        if "not a git repository" in str(e):
+            repo = os.path.abspath(getattr(a, "repo", "."))
+            print(f"laneproof: {repo} is not a git repository; run inside one or pass --repo", file=sys.stderr)
+        else:
+            print(f"laneproof: {e}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":
