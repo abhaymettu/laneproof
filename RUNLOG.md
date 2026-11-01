@@ -65,3 +65,17 @@
   build with tectonic; site/writeup.md, site/meta.json, site/launch-post.md, paper/SUBMIT.md.
 - Then: blind-judge the README (hill-climb judge mode), gitleaks, create public repo abhaymettu/laneproof, push,
   fresh clone + install + demo, paste output here.
+
+## 08:45 shipped
+- Public: https://github.com/abhaymettu/laneproof (published as one clean commit; earlier local history held
+  unredacted copies of the first runs). gitleaks: no leaks.
+- Final table (bench/results.md), 84 lanes per condition pooled over sonnet independent, sonnet coupled, haiku coupled:
+  seq 83/84 done, 1 wrong report, 230 s; shared 84/84, 16 wrong reports, 129 s; worktree 64/84, 20 wrong reports,
+  129 s; laneproof 73/84, 0 wrong reports, 347 s. Gate bounces 86, of which 1 lane was wrong on its own branch.
+- Fresh-clone proof (scratch dir, 08:44): `pip install git+https://github.com/abhaymettu/laneproof` -> `laneproof
+  --version` 0.1.0; `laneproof demo` exit 0, rename landed first try, docs and double each caught once then landed,
+  replayed start refused; `git clone` + `python3 bench/score.py` reproduces the table from the committed logs
+  (e.g. sonnet coupled gated 24/30, 0 said-done-isn't; haiku coupled shared 30/30, 6 said-not-done-is).
+- Not done: blind-judge rounds on the README (context ran short; the README went through one self-edit pass only).
+- Next ideas: more retries or a priority boost for lanes bounced twice by conflicts (the 11 unlanded lanes);
+  a Claude Code Stop hook that refuses to end a lane without a receipt.
